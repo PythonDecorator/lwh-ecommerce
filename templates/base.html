@@ -1,0 +1,599 @@
+{% load static %}
+{% load item_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="template" content="Living Water Heritage">
+    <meta name="title" content="Living Water Heritage - Ecommerce Food Store">
+    <meta name="keywords"
+          content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online">
+    <title>Living Water Heritage
+        {% block title %}
+
+        {% endblock %}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,300;1,400&display=swap"
+          rel="stylesheet">
+
+    <link rel="icon" href="{% static 'assets/images/logoicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/fonts/flaticon/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/icofont/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/venobox/venobox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/slickslider/slick.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/niceselect/nice-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/bootstrap.min.css' %}">
+    {% comment %}    <link rel="stylesheet" href="{% static 'assets/css/index.css' %}">{% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'assets/css/product-details.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/checkout.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/about.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/faq.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/orderlist.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/error.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+        {#background-color: whitesmoke !important;#}
+        }
+
+        .disable-active.active {
+            border-color: white !important;
+        }
+
+        .product-name {
+            min-height: 52px;
+        !important;
+        }
+
+        .product-image {
+            height: 178px;
+        }
+
+        .section {
+            margin-bottom: 50px !important;
+        }
+
+        .custom_order_titles {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .product-content {
+            padding-top: 12px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            height: 185px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between
+        }
+
+        .feature-content {
+            width: 100%;
+            height: 100%;
+            padding-left: 25px;
+            margin-left: 25px;
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .modal-backdrop {
+            /* bug fix - no overlay */
+            display: none;
+        }
+
+
+    </style>
+    {% block css %}
+    {% endblock %}
+</head>
+<body>
+{% comment %}<div class="backdrop"></div>{% endcomment %}
+<a class="backtop fas fa-arrow-up" href="#"></a>
+<div class="header-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-5">
+                <div class="header-top-welcome">
+                    <p>Welcome to Living Water Heritage in Your Dream Online Store!</p>
+                </div>
+            </div>
+            <div class="col-md-5 col-lg-3">
+
+            </div>
+            <div class="col-md-7 col-lg-4">
+                <ul class="header-top-list">
+                    <li><a href="{% url 'home:offer_page' %}">coupons</a></li>
+                    <li><a href="{% url 'home:faq_page' %}">need help</a></li>
+                    <li><a href="{% url 'home:contact_page' %}">contact us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<header class="header-part">
+    <div class="container">
+        <div class="header-content">
+            <div class="header-media-group">
+
+                <button class="header-user">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href=" {% url 'home:home_page' %}">
+                    <img src="{% static 'assets/images/logo-bg.PNG' %}"
+                         alt="logo" class=""></a>
+                <button class="header-src"><i class="fas fa-search"></i></button>
+            </div>
+
+            <a href="{% url 'home:home_page' %}" class="header-logo">
+                <img src="{% static 'assets/images/logo-bg.png' %}"
+                     alt="logo"></a>
+
+
+            <form class="header-form" action="{% url 'items:items' %}">
+                <input type="text" placeholder="Search anything..."
+                        {% if request.GET.search %}
+                       value="{{ request.GET.search }}"
+                        {% endif %}
+                       name="search">
+                <button><i class="fas fa-search"></i></button>
+            </form>
+            <div class="header-widget-group">
+                <a href="{% url 'order:wishlist' %}" class="header-widget"
+                   title="Wishlist"><i
+                        class="fas fa-heart"></i><sup
+                        class="wishlist_item_count">
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.customer.device|wishlist_item_count }}
+                    {% else %}
+                        {{ request.COOKIES.gimsap_device|wishlist_item_count }}
+                    {% endif %}
+                </sup></a>
+
+                <a class="header-widget " href="{% url 'order:checkout' %}"
+                   title="Cartlist"><i
+                        class="fas fa-shopping-basket"></i><sup
+                        class="total_item_count">
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.customer.device|user_order_total_item_count }}+
+                    {% else %}
+                        {{ request.COOKIES.gimsap_device|user_order_total_item_count }}+
+                    {% endif %}
+                </sup>
+                    <span>total price<small
+                            class="total_item_amount">
+                                            {% if request.user.is_authenticated %}
+                                                ${{ request.user.customer.device|user_order_total_amount }}
+                                            {% else %}
+                                                ${{ request.COOKIES.gimsap_device|user_order_total_amount }}
+                                            {% endif %}
+                    </small></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<nav class="navbar-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-content">
+                    <ul class="navbar-list">
+                        <li class="navbar-item "><a class="navbar-link "
+                                                    href="{% url 'home:home_page' %}">home</a>
+                        </li>
+
+                        <li class="navbar-item dropdown-megamenu"><a class="navbar-link dropdown-arrow"
+                                                                     href="#">category</a>
+                            <div class="megamenu">
+                                <div class="container megamenu-scroll ">
+                                    <div class="row row-cols-5">
+                                        {% for item in Categorys %}
+                                            <div class="col">
+                                                <div class="megamenu-wrap">
+
+                                                    <a href="{{ item.get_absolute_url }}"><h5
+                                                            class="megamenu-title"> {{ item.name|safe }}  </h5>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="navbar-item dropdown"><a class="navbar-link dropdown-arrow" href="#">My
+                            Account</a>
+                            <ul class="dropdown-position-list">
+                                {% if request.user.is_authenticated %}
+                                    <li><a href="{% url 'user:profile_page' %}">profile</a></li>
+                                    <li><a href="{% url 'order:wishlist' %}">wishlist</a></li>
+                                    <li><a href="{% url 'order:checkout' %}">checkout</a></li>
+                                    <li><a href="{% url 'order:order_history' %}">order history</a></li>
+                                    {% if request.user.is_superuser %}
+                                        <li><a href="{% url 'dashboard:dashboard_page' %}">Dashboard</a></li>
+                                    {% endif %}
+                                    <li><a href="{% url 'account_change_password' %}">change password</a></li>
+                                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'account_reset_password' %}">Reset password</a></li>
+                                    <li><a href="{% url 'account_login' %}">login</a></li>
+                                    <li><a href="{% url 'account_signup' %}">register</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <div class="navbar-info-group">
+                        <div class="navbar-info"><i class="icofont-ui-touch-phone"></i>
+                            <p><small>call us</small><span style="">{{ gimsap_phone_number }}</span></p>
+                        </div>
+                        <div class="navbar-info"><i class="icofont-ui-email"></i>
+                            <p><small>email us</small><span>livingwaterheritage@gmail.com</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<aside class="category-sidebar">
+    <div class="category-header">
+        <h4 class="category-title"><i class="fas fa-align-left"></i><span>categories</span></h4>
+        <button class="category-close"><i class="icofont-close"></i></button>
+    </div>
+    <ul class="category-list">
+        {% for item in Categorys %}
+            <li class="category-item"><a class="category-link dropdown-lin" href="{{ item.get_absolute_url }}">
+                <span>{{ item.name|safe }}</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="category-footer">
+        <p>All Rights Reserved by <a href="{% url 'home:home_page' %}">Gimsap</a></p>
+    </div>
+</aside>
+
+<aside class="nav-sidebar">
+    <div class="nav-header">
+        <a href="{% url 'home:home_page' %}" class="">
+            <img src="{% static 'assets/images/logo.png' %}"
+                 alt="logo"></a>
+        <button class="nav-close"><i class="icofont-close"></i></button>
+    </div>
+    <div class="nav-content">
+        {% if not request.user.is_authenticated %}
+            <div class="nav-btn"><a href="{% url 'account_login' %}" class="btn btn-inline"><i
+                    class="fa fa-unlock-alt"></i><span>join here</span></a></div>
+
+        {% endif %}
+        <ul class="nav-list">
+            <li><a class="nav-link dropdown-link" href="#"><i class="icofont-home"></i>Home
+            </a>
+                <ul class="dropdown-list">
+                    <li><a href="{% url 'home:home_page' %}">Home</a></li>
+                    <li><a href="{% url 'items:featured_items' %}">Feature</a></li>
+                    <li><a href="{% url 'items:items' %}">Sale</a></li>
+                </ul>
+            </li>
+
+            <li><a class="nav-link dropdown-link" href="#"><i class="icofont-bag-alt"></i>my account</a>
+                <ul class="dropdown-list">
+                    <li><a href="{% url 'user:profile_page' %}">profile</a></li>
+                    <li><a href="{% url 'order:wishlist' %}">wishlist</a></li>
+                    <li><a href="{% url 'order:checkout' %}">checkout</a></li>
+                    <li><a href="{% url 'order:order_history' %}">order history</a></li>
+                    <li><a href="{% url 'dashboard:dashboard_page' %}">Dashboard</a></li>
+                </ul>
+            </li>
+            <li><a class="nav-link dropdown-link" href="#"><i class="icofont-lock"></i>authentication</a>
+                <ul class="dropdown-list">
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'account_change_password' %}">change password</a></li>
+                        <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_reset_password' %}">Reset password</a></li>
+                        <li><a href="{% url 'account_login' %}">login</a></li>
+                        <li><a href="{% url 'account_signup' %}">register</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% comment %}<li><a class="nav-link dropdown-link" href="#"><i class="icofont-book-alt"></i>blogs</a>{% endcomment %}
+
+            <li><a class="nav-link" href="{% url 'items:items' %}"><i class="icofont-food-cart"></i>product's</a>
+
+            </li>
+            <li><a class="nav-link" href="{% url 'home:about_page' %}"><i class="icofont-info-circle"></i>about
+                us</a>
+            </li>
+            <li><a class="nav-link" href="{% url 'home:faq_page' %}"><i class="icofont-support-faq"></i>need
+                help</a>
+            </li>
+            <li><a class="nav-link" href="{% url 'home:contact_page' %}"><i class="icofont-contacts"></i>contact
+                us</a>
+            </li>
+            <li><a class="nav-link" href="{% url 'account_login' %}"><i class="icofont-logout"></i>logout</a>
+            </li>
+        </ul>
+        <div class="nav-info-group">
+            <div class="nav-info"><i class="icofont-ui-touch-phone"></i>
+                <p><small>call us</small><span>{{ gimsap_phone_number }}</span></p>
+            </div>
+            <div class="nav-info"><i class="icofont-ui-email"></i>
+                <p><small>email us</small><span>livingwaterheritage@gmail.com</span></p>
+            </div>
+        </div>
+        <div class="nav-footer">
+            <p>All Rights Reserved by <a href="{% url 'home:home_page' %}">Living Water Heritage</a></p>
+        </div>
+    </div>
+</aside>
+<div class="mobile-menu"><a href="{% url 'home:home_page' %}" title="Home Page"><i
+        class="fas fa-home"></i><span>Home</span></a>
+    <button class="cate-btn" title="Category List"><i class="fas fa-list"></i><span>category</span></button>
+    <a class="" title="Cartlist" href="{% url 'order:checkout' %}"><i
+            class="fas fa-shopping-basket"></i>
+        <span>cartlist</span><sup
+                class="total_item_count">
+            {% if request.user.is_authenticated %}
+                {{ request.user.customer.device|user_order_total_item_count }}+
+            {% else %}
+                {{ request.COOKIES.gimsap_device|user_order_total_item_count }}+
+            {% endif %}
+        </sup>
+    </a>
+    <a
+            href="{% url 'order:wishlist' %}" title="Wishlist"><i
+            class="fas fa-heart"></i><span>wishlist</span><sup
+            class="wishlist_item_count">
+        {% if request.user.is_authenticated %}
+            {{ request.user.customer.device|wishlist_item_count }}
+        {% else %}
+            {{ request.COOKIES.gimsap_device|wishlist_item_count }}
+        {% endif %}</sup></a>
+
+</div>
+
+{% block content %}
+
+{% endblock %}
+<section class="news-part"
+         style="background: url({% static 'assets/images/newsletter.jpg' %}) no-repeat center;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-5 col-lg-6 col-xl-7">
+                <div class="news-text">
+                    <h2>Get Discount for Subscriber</h2>
+                    <p>Subscribe to our weekly post to get coupon </p>
+                </div>
+            </div>
+            <div class="col-md-7 col-lg-6 col-xl-5">
+                <form class="news-form" method="post" id="subscription_form"
+                      action="{% url 'home:subscribe' %}">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Enter Your Email Address" name="subscribe_email">
+                    <button type="submit" onclick=""><span><i class="icofont-ui-email"></i>Subscribe</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="intro-part">
+    <div class="container">
+        <div class="row intro-content">
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon"><i class="fas fa-truck"></i></div>
+                    <div class="intro-content">
+                        <h5>home delivery</h5>
+                        <p>Provide home delivery for all location.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon"><i class="fas fa-headset"></i></div>
+                    <div class="intro-content">
+                        <h5>quick support system</h5>
+                        <p>Provide payments with all card type.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon"><i class="fas fa-lock"></i></div>
+                    <div class="intro-content">
+                        <h5>secure payment way</h5>
+                        <p>Payment secured.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer-part">
+    <div class="container">
+        <div class="row mx-auto">
+            <div class="col-sm-6 col-xl-4">
+                <div class="footer-widget"><a class="footer-logo" href="#"><img
+                        src="{% static 'assets/images/logo.png' %}" alt="logo"></a>
+                    <p class="footer-desc">LIVING WATER HERITAGE MARKT INC. is a small family-run business based in Calgary,
+                        AB; nestled against the foothills of the Rockies..</p>
+                    <ul class="footer-social">
+                        <li><a class="icofont-facebook" href="{{ gimsap_facebook }}"></a></li>
+                        {#                        <li><a class="icofont-twitter" href="{{ gimsap_twitter }}"></a></li>#}
+                        {#                        <li><a class="icofont-linkedin" href="{{ gimsap_linkedin }}"></a></li>#}
+                        <li><a class="icofont-instagram" href="{{ gimsap_instagram }}"></a></li>
+                        {#                        <li><a class="icofont-pinterest" href="{{ gimsap_pinterest }}"></a></li>#}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="footer-widget contact">
+                    <h3 class="footer-title">contact us</h3>
+                    <ul class="footer-contact">
+                        <li><i class="icofont-ui-email"></i>
+                            <p><span>{{ gimsap_email }}</span></p>
+                        </li>
+                        <li><i class="icofont-ui-touch-phone"></i>
+                            <p><span>{{ gimsap_phone_number }}</span></p>
+                        </li>
+                        <li><i class="icofont-location-pin"></i>
+                            <p>{{ gimsap_address }}</p>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="footer-widget">
+                    <h3 class="footer-title">quick Links</h3>
+                    <div class="footer-links">
+                        <ul>
+                            <li><a href="{% url 'user:profile_page' %}">My Account</a></li>
+                            <li><a href="{% url 'order:order_history' %}">Order History</a></li>
+                            <li><a href="{% url 'home:privacy_policy' %}">Privacy Policy</a></li>
+                            <li><a href="{% url 'home:shipping_policy' %}">Shipping Policy</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="{% url 'home:contact_page' %}">Contact</a></li>
+                            <li><a href="{% url 'home:about_page' %}">About</a></li>
+                            <li><a href="{% url 'home:terms_and_condition' %}">Terms of Service</a></li>
+                            <li><a href="{% url 'home:refund_policy' %}">Refund Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="footer-bottom">
+                    <p class="footer-copytext">&copy; All Copyrights Reserved by <a href="{% url 'home:home_page' %}">Living Water Heritage</a>
+                    </p>
+                    <div class="footer-card"><a href="#"><img
+                            src="{% static 'assets/images/payment/jpg/01.jpg' %}"
+                            alt="payment"></a><a
+                            href="#"><img src="{% static 'assets/images/payment/jpg/02.jpg' %}"
+                                          alt="payment"></a><a
+                            href="#"><img
+                            src="{% static 'assets/images/payment/jpg/03.jpg' %}" alt="payment"></a><a href="#"><img
+                            src="{% static 'assets/images/payment/jpg/04.jpg' %}" alt="payment"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% csrf_token %}
+<script src="{% static 'assets/vendor/bootstrap/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap/popper.min.js' %}"></script>
+<script src="{% static 'assets/vendor/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/vendor/countdown/countdown.min.js' %}"></script>
+<script src="{% static 'assets/vendor/niceselect/nice-select.min.js' %}"></script>
+<script src="{% static 'assets/vendor/slickslider/slick.min.js' %}"></script>
+<script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/js/nice-select.js' %}"></script>
+<script src="{% static 'assets/js/countdown.js' %}"></script>
+<script src="{% static 'assets/js/accordion.js' %}"></script>
+<script src="{% static 'assets/js/venobox.js' %}"></script>
+<script src="{% static 'assets/js/slick.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script type="text/javascript">
+    var is_authenticated = `{{ request.user.is_authenticated }}`.toString();
+    var add_to_cart_url = `{% url 'order:add_to_cart' %}`.toString();
+    var remove_from_cart_url = `{% url 'order:remove_single_from_cart' %}`.toString();
+    var login_url = '{% url 'account_login' %}'
+    var add_to_wishlist_url = '{% url 'order:wishlist' %}'
+    var subscription_url = '{% url 'home:subscribe' %}'
+</script>
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    let gimsap_device = getCookie('gimsap_device')
+    if (gimsap_device == null || gimsap_device == undefined) {
+        gimsap_device = uuidv4()
+    }
+    // if I am logged I set the device to my device
+    console.log(is_authenticated)
+    let logo_url = `{% static 'assets/images/logo.png' %}`.toString()
+    if (is_authenticated === "True") {
+        if (`{{ request.user.customer.device }}` !== "" || null) {
+            let gimsap_device = `{{ request.user.customer.device }}`.toString();
+            console.log("customer device", gimsap_device)
+            document.cookie = 'gimsap_device=' + gimsap_device + ";domain=;path=/"
+        }
+    } else if (`{{request.COOKIES.gimsap_device}}`.toString() !== "" || null) {
+        console.log("Using request.COOKIES.gimsap_device", `{{request.COOKIES.gimsap_device}}`)
+        gimsap_device = `{{request.COOKIES.gimsap_device}}`.toString()
+        document.cookie = 'gimsap_device=' + gimsap_device + ";domain=;path=/"
+    } else {
+        console.log("using browser  device", gimsap_device)
+        document.cookie = 'gimsap_device=' + gimsap_device + ";domain=;path=/"
+    }
+</script>
+
+{% block script %}
+{% endblock script %}
+<script src="{% static 'assets/js/my_script.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.all.min.js"></script>
+
+{% if messages %}
+    <script>
+        window.addEventListener('load', (event) => {
+            {% for message in messages %}
+                console.log("{{ message.tags }}")
+                Swal.fire({
+                    imageUrl: '{% static 'assets/images/logo.png' %}',
+                    imageHeight: 50,
+                    imageAlt: 'Living Water Heritage',
+                    confirmButtonColor: '#ff3838',
+                    text: '{{ message }}',
+                })
+            {% endfor %}
+
+            console.log('page is fully loaded');
+        });
+    </script>
+{% endif %}
+</body>
+
+</html>

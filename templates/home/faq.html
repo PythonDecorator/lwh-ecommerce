@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;display: block !important;margin-top:0 !important;">
+        <div class="container">
+            <h3 class="text-white text-capitalize">Frequently Asked Questions</h3>
+
+        </div>
+    </section>
+    <section class="inner-section faq-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="faq-parent">
+                        {% for item in Faqs %}
+                            <div class="faq-child">
+                                <div class="faq-que">
+                                    <button>{{ item.answer }}</button>
+                                </div>
+                                <div class="faq-ans">
+                                    <p>{{ item.question }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

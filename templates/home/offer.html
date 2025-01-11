@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;display: block !important;margin-top:0 !important;">
+        <div class="container">
+            <h4 class="text-white">Discount & offers</h4>
+            <p class="text-white">Get access to coupon by purchasing products above order Rate </p>
+        </div>
+    </section>
+    <section class="inner-section offer-part">
+        <div class="container">
+            <div class="row justify-content-center">
+                {% for item in object_list %}
+                    <div class="col-sm-6 col-md-4 col-lg-3" onclick="copyTextCode('{{ item.code }}')">
+                        <div class="offer-card shadow"><a href="#" onclick="copyTextCode('{{ item.code }}')"><img
+                                src="{{ item.imageURL }}" alt="offer"></a>
+                            <div class="offer-div">
+                                <h5 class="offer-code">Order Rate: ${{ item.order_price }}</h5>
+                                <button class="offer-select" onclick="copyTextCode('{{ item.code }}')">copy
+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        const copyTextCode = (code) => {
+            console.log(code)
+            navigator.clipboard.writeText(code);
+            navigator.clipboard
+                .writeText(code)
+                .then(() => {
+                    console.log("Copied item")
+                })
+                .catch(() => {
+                    console.log("Item not copied")
+                });
+        }
+    </script>
+{% endblock %}

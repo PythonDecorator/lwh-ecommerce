@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load item_tags %}
+{% load static %}
+
+{% block content %}
+
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>wishlist</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">wishlist</li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section wishlist-part">
+        <div class="container">
+            <div class="row profile-card shadow">
+                <div class="col-lg-12 ">
+                    <div class="table-scroll">
+                        <table class="table-list">
+                            <thead>
+                            <tr>
+                                <th scope="col" class=" d-none d-md-table-cell">Serial</th>
+                                <th scope="col" class=" d-none d-md-table-cell">Product</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">shopping</th>
+                                <th scope="col">action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td class="table-serial d-none d-md-table-cell">
+                                        <h6>{{ forloop.counter }}</h6>
+                                    </td>
+                                    <td class="table-image d-none d-md-table-cell"><img src="{{ item.imageURL }}"
+                                                                                        alt="product"></td>
+                                    <td class="table-price ">
+                                        <p style="word-break: break-all;max-width: 300px;min-width: 100px;">
+                                            <a href="{{ item.get_absolute_url }}" class="text-black"
+                                               style="inline-size: 100%;word-break: normal;overflow-wrap: anywhere;color: red">
+                                                {{ item.name|safe|truncatewords:5 }}
+                                            </a>
+                                        </p>
+                                    </td>
+                                    <td class="table-price" style="">
+                                        <h6>   {% if item.discount %}
+                                            <del>${{ item.price }}</del>
+                                            <span>${{ item.discount }}<small>/discount</small></span>
+                                        {% else %}
+                                            <span>${{ item.price }}</span>
+                                        {% endif %}
+                                        </h6>
+                                    </td>
+
+                                    <td class="table-shop">
+                                        <button class="product-add" title="Add to Cart"><i
+                                                class="fas fa-shopping-basket"></i><span>add</span></button>
+                                        <div class="product-action">
+                                            <button class=""
+                                                    title="Quantity Minus"><i
+                                                    class="icofont-minus"
+                                                    onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                            </button>
+                                            <input type="hidden" id="{{ item.id }}_id_item_id"
+                                                   class="{{ item.id }}_id_item_id"
+                                                   name="item_id"
+                                                   value="{{ item.id }}">
+                                            <input class="{{ item.id }}_id_item_count "
+                                                   title="Quantity Number"
+                                                   name="item_count"
+                                                   id="{{ item.id }}_id_item_count"
+                                                   type="text"
+                                                   value="{% item_quantity request.COOKIES.gimsap_device item.id %}"
+                                                   style="min-width: 30px !important;">
+                                            <button class="" title="Quantity Plus"><i
+                                                    class="icofont-plus"
+                                                    onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                    <td class="table-action">
+                                        <a class="view" href="#" title="Quick View"
+                                           data-bs-toggle="modal" data-bs-target="#wishlist-view{{ item.id }}"><i
+                                                class="fas fa-eye"></i></a>
+                                        <form method="post" action=".">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{ item.id }}" name="id" class="">
+                                            <input type="hidden" value="delete" name="action">
+                                            <button class="trash" type="submit"
+                                                    title="Remove Wishlist"><i
+                                                    class="icofont-trash"></i></button>
+                                        </form>
+
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="wishlist-view{{ item.id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <button class="modal-close icofont-close" data-bs-dismiss="modal"></button>
+                                            <div class="product-view">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <div class="view-gallery">
+                                                            <div class="view-label-group"><label
+                                                                    class="view-label feat">
+                                                                {% if item.discount %}
+                                                                    <del>${{ item.price }}</del>
+                                                                    <span>${{ item.discount }}<small>/discount</small></span>
+                                                                {% else %}
+                                                                    <span>${{ item.price }}</span>
+                                                                {% endif %}
+                                                            </label>
+                                                            </div>
+                                                            <a href="{{ item.get_absolute_url }}"><img
+                                                                    src="{{ item.imageURL }}"
+                                                                    alt="product"
+                                                                    style="object-fit: contain;min-height: 200px;width: 100%">
+                                                            </a>
+                                                        </div>
+                                                        <p class="text-capitalize px-5"> {{ item.name|safe }}</p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mt-5">
+                        {% if items.has_other_pages %}
+                            <ul class="pagination">
+                                {% if items.has_previous %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ items.previous_page_number }}"><i
+                                            class="fas fa-long-arrow-alt-left"></i></a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="#"><i
+                                            class="fas fa-long-arrow-alt-left"></i></a></li>
+                                {% endif %}
+                                {% for i in items.paginator.page_range %}
+                                    {% if items.number == i %}
+
+                                        <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if items.has_next %}
+                                    <li class="page-item pl-2  fa-2x">
+                                        <a class="page-link" href="?page={{ items.next_page_number }}"><i
+                                                class="fas fa-long-arrow-alt-right"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="#"><i
+                                            class="fas fa-long-arrow-alt-right"></i></a>
+                                    </li>
+                                {% endif %}
+
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

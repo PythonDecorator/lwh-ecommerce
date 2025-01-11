@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>Order invoice</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'order:order_history' %}">Order History</a></li>
+                <li class="breadcrumb-item active" aria-current="page">invoice</li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section invoice-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert-info">
+                        <p>Thank you! We have received your order.</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="account-card shadow text-capitalize">
+                        <div class="account-title">
+                            {% if order.received %}
+                                <h4>order received</h4>
+                            {% else %}
+                                {% if order.delivery_method == 'SHIPPING' %}
+                                    <h4>order Not Delivered </h4>
+                                {% else %}
+                                    <h4>order Not Picked </h4>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="account-content">
+                            <div class="invoice-recieved text-capitalize">
+                                <h6 class="custom_order_titles">Order Reference Number:</h6>
+                                <span>{{ order.ref_code }}</span>
+                                <h6 class="custom_order_titles">order date :</h6><span>{{ order.ordered_date }}</span>
+                                <h6 class="custom_order_titles">total amount :</h6> <span>${{ order.get_total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Order Details</h4>
+                        </div>
+                        <div class="account-content">
+                            <ul class="invoice-details">
+                                <li>
+                                    <h6 class="custom_order_titles">Total Item</h6>
+                                    <p>{{ order.get_total_item_count }} Items</p>
+                                </li>
+                                <li>
+                                    <h6 class="custom_order_titles">Order Time</h6>
+                                    <p>{{ order.ordered_date|timesince }}</p>
+                                </li>
+                                {% if order.delivery_method == 'PICKUP' %}
+                                    <li>
+                                        <h6 class="custom_order_titles">Delivery </h6>
+                                        <p>{{ order.pickup_address.name }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">Delivery Location </h6>
+                                        <p>{{ order.pickup_address.location }}</p>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <h6 class="custom_order_titles">Country </h6>
+                                        <p>{{ order.shipping_address.country }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">State </h6>
+                                        <p>{{ order.shipping_address.state }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">Zip Code </h6>
+                                        <p>{{ order.shipping_address.zip_code }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">Street Address </h6>
+                                        <p>{{ order.shipping_address.street_address }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">Apartment Address </h6>
+                                        <p>{{ order.shipping_address.apartment_address }}</p>
+                                    </li>
+
+                                    <li>
+                                        <h6 class="custom_order_titles">Shipping Routine</h6>
+                                        <p>{{ order.shipping_address.shipping_routine.routine }}</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="custom_order_titles">Shipping Price</h6>
+                                        <p>${{ order.shipping_address.shipping_routine.price }}</p>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Amount Details</h4>
+                        </div>
+                        <div class="account-content">
+                            <ul class="invoice-details">
+                                <li>
+                                    <h6 class="custom_order_titles">Sub Total</h6>
+                                    <p>${{ order.get_sub_total }}</p>
+                                </li>
+                                {% if order.coupon %}
+                                    <li>
+                                        <h6 class="custom_order_titles">discount</h6>
+                                        <p>%{{ order.coupon.percent }}</p>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <h6 class="custom_order_titles">Delivery Method</h6>
+                                    <p>{{ order.delivery_method|title }}</p>
+                                </li>
+                                <li>
+                                    <h6 class="custom_order_titles">Total<small>(Incl. VAT)</small></h6>
+                                    <p>${{ order.get_total }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="table-scroll shadow">
+                        <table class="table-list">
+                            <thead>
+                            <tr>
+                                <th scope="col" class=" ">Serial</th>
+                                <th scope="col" class=" ">Product</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">quantity</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order_item in order.items.all %}
+                                <tr>
+                                    <td class="table-serial ">
+                                        <h6>0{{ forloop.counter }}</h6>
+                                    </td>
+                                    <td class="table-image "><img
+                                            src="{{ order_item.item.imageURL }}"
+                                            alt="product">
+                                    </td>
+                                    <td class="table-name">
+                                        <div style="word-break: break-all;max-width: 300px;min-width: 100px;">
+                                            <a href="{{ order_item.item.get_absolute_url }}">
+                                                <h6 style="inline-size: 100%;word-break: break-word;overflow-wrap: anywhere;color: red;">
+                                                    {{ order_item.item.name|safe }}</h6>
+                                            </a>
+                                        </div>
+
+                                    </td>
+                                    <td class="table-price">
+                                        <h6>${{ order_item.get_final_price }}</h6>
+                                    </td>
+
+                                    <td class="table-quantity">
+                                        <h6>{{ order_item.quantity }}</h6>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center mt-5">
+                    {% comment %}<a class="btn btn-inline" href="#"><i
+                        class="icofont-download"></i><span>download invoice</span></a>{% endcomment %}
+
+                    <div class="back-home"><a href="{% url 'home:home_page' %}">Back to Home</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

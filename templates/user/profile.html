@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>my profile</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">profile</li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section profile-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Your Profile</h4>
+                            <button data-bs-toggle="modal" data-bs-target="#profile-edit">edit profile</button>
+                        </div>
+                        <div class="account-content">
+                            <div class="row">
+                                <div class="col-lg-2">
+
+                                    <div class="profile-image"><a href="#"><img
+                                            {% if customer.imageURL %}
+                                                src="{{ customer.imageURL }}"
+                                            {% else %}
+                                                     src="{% static 'assets/images/user.png' %}"
+                                            {% endif %}
+                                                alt="user"></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group  " >
+                                        <strong class="custom_order_titles">Name </strong> <br><br>
+                                        {{ customer.first_name }} {{ customer.last_name }}</div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group"><strong  class="custom_order_titles">Email</strong> <br>
+                                        <br>{{ customer.user.email }}</div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="profile-btn"><a href="{% url 'account_change_password' %}">change
+                                        pass.</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>contact number</h4>
+                        </div>
+                        <div class="account-content">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">Mobile Number</h6>
+                                        <p>{{ customer.phone_number }}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Delivery address</h4>
+                            <button data-bs-toggle="modal" data-bs-target="#shipping-edit">Edit address</button>
+                        </div>
+                        <div class="account-content">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">Country</h6>
+                                        <p>{{ shipping_address.country }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">State</h6>
+                                        <p> {{ shipping_address.state }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">Street Address</h6>
+                                        <p> {{ shipping_address.street_address }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">Apartment Address</h6>
+                                        <p> {{ shipping_address.apartment_address }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4 col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active contact active">
+                                        <h6 class="custom_order_titles">Zip Code</h6>
+                                        <p>{{ shipping_address.zip_code }}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="profile-edit">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                <form class="modal-form" method="post" action="." enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-title">
+                        <h3>edit profile info</h3>
+                    </div>
+                    {{ customer_form|crispy }}
+                    <button class="form-btn" type="submit">save profile info</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="shipping-edit">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                <form class="modal-form" method="post" action="{% url 'user:profile_page' %}">
+                    {% csrf_token %}
+                    <div class="form-title">
+                        <h3 class="custom_order_titles">edit shipping info</h3>
+                    </div>
+                    {{ shipping_address_form|crispy }}
+                    <button class="form-btn" type="submit">save shipping info</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

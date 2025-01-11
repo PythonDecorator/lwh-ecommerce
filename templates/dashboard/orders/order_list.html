@@ -1,0 +1,190 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load item_tags %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-12 grid-margin stretch-card">
+            <div class="" style="display: flex;justify-content:end;align-items: center;width: 100%;" id="">
+                <a href="{% url 'order:dashboard_order_list' %}" class="btn btn-outline-dark ml-3">All Orders</a>
+                <a href="{% url 'order:dashboard_active_order_list' %}" class="btn btn-outline-success ml-3">Active
+                    Orders</a>
+                <a href="{% url 'order:dashboard_inactive_order_list' %}" class="btn btn-outline-danger ml-3">In Active
+                    Orders</a>
+            </div>
+        </div>
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Orders</h6>
+                    <p class="text-muted mb-3"> List of orders from users.</p>
+                    <div class="table-responsive">
+                        <div id="dataTableExample_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <form action="." style="display: flex">
+                                        <div id="dataTableExample_filter" class="dataTables_filter"><label>
+                                            <input name="search"
+                                                    {% if request.GET.search %}
+                                                   value="{{ request.GET.search }}"
+                                                    {% endif %}
+                                                   type="search" class="form-control" placeholder="Search"
+                                                   aria-controls="dataTableExample"></label></div>
+                                        <button class="btn btn-success" type="submit">Search</button>
+                                    </form>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="dataTableExample" class="table dataTable no-footer"
+                                           aria-describedby="dataTableExample_info">
+                                        <thead>
+
+                                        <tr>
+
+                                            <th class="sorting sorting_asc" tabindex="0"
+                                                aria-controls="dataTableExample" rowspan="1" colspan="1"
+                                                aria-sort="ascending"
+                                                aria-label="Name: activate to sort column descending"
+                                                style="width: 154.234px;">Name
+                                            </th>
+
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Office: activate to sort column ascending"
+                                                style="width: 113.031px;">Delivery Method
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Office: activate to sort column ascending"
+                                                style="width: 113.031px;">Ordered
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Age: activate to sort column ascending"
+                                                style="width: 46.9219px;">Received
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Start date: activate to sort column ascending"
+                                                style="width: 108.5px;">Ordered Date
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Salary: activate to sort column ascending"
+                                                style="width: 76.3125px;">Paid
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for item in object_list %}
+
+                                            <tr class="even">
+                                                <td class="sorting_1">
+                                                    <a href="{{ item.get_update_url }}"
+                                                       class="text-success">
+                                                        <i data-feather="edit"></i>
+                                                    </a>
+                                                    <a href="{{ item.get_delete_url }}" class="text-danger">
+                                                        <i data-feather="trash"></i>
+                                                    </a>
+                                                    {% if not item.customer.first_name and item.customer.last_name %}
+                                                        {{ item.customer.first_name }}
+                                                        {{ item.customer.last_name }}
+                                                    {% else %}
+                                                        {{ item.customer.user.email }}
+                                                    {% endif %}
+                                                </td>
+                                                <td><a href="{{ item.get_update_url }}">{{ item.delivery_method }}</a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ item.get_update_url }}"> {% if item.ordered %}
+                                                        Ordered
+                                                    {% endif %}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {% if item.received %}
+                                                        Received
+                                                    {% else %}
+                                                        Not Received
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if item.ordered %}
+                                                        {{ item.ordered_date }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if item.ordered %}
+                                                        ${{ item.get_total }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row pt-5 mt-4">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="dataTableExample_info" role="status"
+                                         aria-live="polite"> Showing {{ page_obj.number }}
+                                        of {{ page_obj.paginator.num_pages }} Pages
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7 ">
+                                    <div class="dataTables_paginate paging_simple_numbers"
+                                         id="dataTableExample_paginate">
+
+                                        {% if is_paginated %}
+
+                                            <ul class="pagination">
+                                                {% if page_obj.has_previous %}
+                                                    <li class="paginate_button page-item previous active"><a
+                                                            class="page-link"
+                                                            href=" {% paginate_url page_obj.previous_page_number 'page' request.GET.urlencode %}"
+                                                    ><i
+                                                            data-feathe="arrow-left-circle"></i>Previous</a></li>
+
+                                                {% endif %}
+                                                {% for i in paginator.page_range %}
+                                                    {% if page_obj.number == i %}
+
+                                                        <li class="page-item"><a
+                                                                class="page-link active bg-success text-white">{{ i }}</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="{% paginate_url i 'page' request.GET.urlencode %}">{{ i }}</a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if page_obj.has_next %}
+                                                    <li class="paginate_button page-item previous active pl-2  fa-2x">
+                                                        <a class="page-link"
+
+                                                           href="{% paginate_url page_obj.next_page_number 'page' request.GET.urlencode %}"><i
+                                                                data-feathe="arrow-right-circle"></i>Next</a>
+                                                    </li>
+
+                                                {% endif %}
+
+                                            </ul>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

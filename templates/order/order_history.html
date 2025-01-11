@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>Order History</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Order History</li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section orderlist-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="orderlist-filter">
+                        <h5>total order <span>- ({{ order_list.count }})</span></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    {% for order in object_list %}
+                        <div class="orderlist text-capitalize">
+                            <div class="orderlist-head">
+                                <h5>order#0{{ forloop.counter }}</h5>
+                                <h5>order received</h5>
+                            </div>
+                            <div class="orderlist-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="order-track">
+                                            <ul class="order-track-list">
+
+                                                <li class="order-track-item active"><i class="icofont-check"></i><span>order processed</span>
+                                                </li>
+
+                                                <li class="order-track-item {% if order.received %} active {% endif %}">
+                                                    {% if order.received %}
+                                                        <a href="{{ order.get_absolute_url }}"><i
+                                                                class="icofont-check"></i></a>
+                                                    {% else %}
+                                                        <a href="{{ order.get_absolute_url }}"> <i
+                                                                class="icofont-close"></i></a>
+                                                    {% endif %}
+                                                    <span>order received</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <ul class="orderlist-details">
+                                            <li>
+                                                <h6 class="custom_order_titles">Order Reference Code</h6>
+                                                <p> {{ order.ref_code }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Total Item</h6>
+                                                <p> {{ order.items.count }} Items</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Order Time</h6>
+                                                <p> {{ order.ordered_date }}</p>
+                                            </li>
+                                            {% if order.delivery_method == 'SHIPPING' %}
+                                                <li>
+                                                    <h6 class="custom_order_titles">Shipping Routine:</h6>
+                                                    <p> {{ order.shipping_address.shipping_routine.routine }}</p>
+                                                </li>
+                                                <li>
+                                                    <h6 class="custom_order_titles">Shipping Price:</h6>
+                                                    <p >${{ order.shipping_address.shipping_routine.price }}</p>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <h6 class="custom_order_titles">Pickup Name: </h6>
+                                                    <p> {{ order.pickup_address.name }}</p>
+                                                </li>
+                                                <li>
+                                                    <h6 class="custom_order_titles">Pickup Location: </h6>
+                                                    <p> {{ order.pickup_address.location }}</p>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <ul class="orderlist-details">
+                                            <li>
+                                                <h6 class="custom_order_titles">Sub Total</h6>
+                                                <p> ${{ order.get_sub_total }}</p>
+                                            </li>
+                                            {% if order.coupon %}
+                                                <li>
+                                                    <h6 class="custom_order_titles">Discount</h6>
+                                                    <p> ${{ order.coupon.percent }}</p>
+                                                </li>
+                                            {% endif %}
+                                            <li>
+                                                <h6 class="custom_order_titles">delivery fee</h6>
+                                                {% if order.delivery_method == 'SHIPPING' %}
+                                                    <p> ${{ order.shipping_address.shipping_routine.price }}</p>
+                                                    {% else %}
+                                                    <p> $0</p>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Total<small>(Incl. VAT)</small></h6>
+                                                <p> ${{ order.get_total }}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                 {% comment %}   <div class="col-lg-3">
+                                        <div class="orderlist-deliver">
+                                            {% if order.delivery_method == 'SHIPPING' %}
+                                                <h6>Shipping location:</h6>
+                                                <p>{{ order.shipping_address.shipping_routine.routine }}</p>
+                                            {% else %}
+                                                <h6>Pickup: {{ order.pickup_address.name }}</h6>
+                                                <p>{{ order.pickup_address.location }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>{% endcomment %}
+                                    <div class="col-lg-12">
+                                        <div class="table-scroll">
+                                            <table class="table-list">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Serial</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">quantity</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for order_item in order.items.all %}
+                                                    <tr>
+                                                        <td class="table-serial">
+                                                            <h6>0{{ forloop.counter }}</h6>
+                                                        </td>
+                                                        <td class="table-image"><img
+                                                                src="{{ order_item.item.imageURL }}"
+                                                                alt="product">
+                                                        </td>
+                                                        <td class="table-name">
+                                                            <h6>{{ order_item.item.name }}</h6>
+                                                        </td>
+                                                        <td class="table-price">
+                                                            <h6>${{ order_item.get_final_price }}</h6>
+                                                        </td>
+
+                                                        <td class="table-quantity">
+                                                            <h6>{{ order_item.quantity }}</h6>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if is_paginated %}
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.previous_page_number }}"><i
+                                        class="fas fa-long-arrow-alt-left"></i></a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="#"><i
+                                        class="fas fa-long-arrow-alt-left"></i></a></li>
+                            {% endif %}
+                            {% for i in paginator.page_range %}
+                                {% if page_obj.number == i %}
+
+                                    <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item pl-2  fa-2x">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i
+                                            class="fas fa-long-arrow-alt-right"></i></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="#"><i
+                                        class="fas fa-long-arrow-alt-right"></i></a>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

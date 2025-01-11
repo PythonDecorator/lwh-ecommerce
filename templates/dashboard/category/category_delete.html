@@ -1,0 +1,19 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block content %}
+
+    <div class="row" style="display:flex;justify-content: center;align-items: center;height: 100%;width: 100%">
+        <div class="col-lg-5 col-xl-5 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Are you sure you want to delete ?<br>{{ item.name }}</h6>
+                    <form action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

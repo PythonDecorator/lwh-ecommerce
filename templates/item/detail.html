@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load item_tags %}
+
+{% block content %}
+    <section class="single-banner inner-section" style="background: url({{ item.imageURL }}) no-repeat center;">
+        <div class="container">
+            <h2>Product Detail</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'items:items' %}">Products</a></li>
+                <li class=" breadcrumb-item active" aria-current="page">Product
+                </li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 shadow">
+                    <div class="details-gallery">
+                        <div class="details-label-group"><label class="details-label new">new</label></div>
+                        <ul class="details-preview">
+                            <li><img src="{{ item.imageURL }}" alt="product"
+                                     style="max-height: 500px;object-fit: contain"></li>
+                        </ul>
+                        <ul class="details-thumb">
+                            {#  <li><img src="{{ item.imageURL}}" alt="product"></li>#}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 shadow">
+                    <div class="float-end" style="width: 100%">
+                        {% if request.user.is_superuser %}
+                            <a href="{% url 'items:item_delete' item.id %}" class="float-end text-danger"> <i
+                                    class="fa fa-trash p-3"></i></a>
+                            <a href="{{ item.get_update_url }}" class="float-end text-success"> <i
+                                    class="fa fa-edit p-3"></i></a>
+                        {% endif %}
+                    </div>
+                    <div class="details-content">
+                        <h3 class="details-name fw-bold"><a href="#">{{ item.name|safe }}</a>
+                        </h3>
+
+                        <div class="details-rating"><i class="active icofont-star"></i><i
+                                class="active icofont-star"></i><i class="active icofont-star"></i><i
+                                class="active icofont-star"></i><i class="active icofont-star"></i><a
+                                href="#">({{ item.review_count }} reviews)</a>
+                        </div>
+                        <h3 class="details-price">
+                            {% if item.discount %}
+                                <del>${{ item.price }}</del>
+                                <span>${{ item.discount }}<small>/discount</small></span>
+                            {% else %}
+                                <span>${{ item.price }}</span>
+                            {% endif %}
+                        </h3>
+                        <p class="details-desc">{{ item.description|truncatewords:20|safe }}.</p>
+                        <div class="details-list-group"><label class="details-list-title">tag:</label>
+                            <ul class="details-tag-list">
+                                <li><a href="{{ item.category.get_absolute_url }}">{{ item.category.name|safe }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% comment %}     <div class="details-list-group"><label class="details-list-title">Share:</label>
+                            <ul class="details-share-list">
+                                <li><a href="#" class="icofont-facebook" title="Facebook"></a></li>
+                                <li><a href="" class="icofont-twitter" title="Twitter"></a></li>
+                                <li><a href="#" class="icofont-linkedin" title="Linkedin"></a></li>
+                                <li><a href="#" class="icofont-instagram" title="Instagram"></a></li>
+                            </ul>
+                        </div>{% endcomment %}
+                        <div class="details-add-group">
+                            <button class="product-add" title="Add to Cart"><i
+                                    class="fas fa-shopping-basket"></i><span>add</span>
+                            </button>
+                            <div class="product-action">
+                                <button class=""
+                                        title="Quantity Minus"><i
+                                        class="icofont-minus"
+                                        onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                </button>
+                                <input type="hidden" id="{{ item.id }}_id_item_id" class="{{ item.id }}_id_item_id"
+                                       name="item_id"
+                                       value="{{ item.id }}">
+                                <input class="action-input {{ item.id }}_id_item_count"
+                                       title="Quantity Number"
+                                       name="item_count"
+                                       id="{{ item.id }}_id_item_count"
+                                       type="text"
+                                       value="{% item_quantity request.COOKIES.gimsap_device item.id %}">
+                                <button class="" title="Quantity Plus"><i
+                                        class="icofont-plus"
+                                        onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="details-action-group">
+                            <button class="product-add btn-outline-success " type="submit"
+                                    title="Add Your Wishlist"
+                                    onclick="add_or_remove_wishlist({{ item.id }},'{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}')">
+                                <i
+                                        class="icofont-heart"></i><span>{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}  wishlist</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="inner-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <div class="product-details-frame shadow">
+                        <h3 class="frame-title">Description</h3>
+
+                        <div class="tab-descrip">
+                            <p>{{ item.description|safe }}.</p>
+                        </div>
+                    </div>
+
+                    {% if item.review_count > 0 %}
+                        <div class="product-details-frame shadow">
+                            <h3 class="frame-title">Reviews ({{ item.review_count }})</h3>
+                            <ul class="review-list">
+                                {% for review_item in item.reviews %}
+                                    <li class="review-item">
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user == request.user or request.user.is_superuser %}
+                                                <form action="{% url 'items:delete_review' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" value="{{ review_item.id }}" name="review_id">
+                                                    <button class="float-end" type="submit">
+                                                        <i class="fa fa-trash text-danger float-end"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="review-media"><a class="review-avatar" href="#"><img
+                                                {% if   item.user.imageURL %}
+                                                    src="{{ item.customer.imageURL }}"
+                                                {% else %}
+                                                    src="{% static 'assets/images/user.png' %}"
+                                                {% endif %}
+                                                    alt="avatar">
+                                        </a>
+                                            <h5 class="review-meta"><a
+                                                    href="#">{{ review_item.name }}</a><span>{{ review_item.timestamp|timesince }}</span>
+                                            </h5>
+                                        </div>
+
+                                        <p class="review-desc">{{ review_item.content }}</p>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <div class="product-details-frame shadow">
+                        <h3 class="frame-title">add your review</h3>
+                        <form class="review-form" method="post" action="{% url 'items:save_review' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="item" id="id_item" value="{{ item.id }}">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="content" id="content"
+                                                  placeholder="Describe" required></textarea></div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="name" id="id_name"
+                                               placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group"><input type="email" name="email" id="id_email"
+                                                                   class="form-control"
+                                                                   placeholder="Email" required></div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button class="btn btn-inline"><i class="icofont-water-drop"></i><span>drop your review</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="inner-section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="section-heading">
+                        <h2>related this items</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                {% for related_item in related_items %}
+                    <div class="col">
+                        <div class="product-card shadow">
+                            <div class="product-media">
+                                <div class="product-label"><label class="label-text sale">sale</label></div>
+                                <button class="product-wish wish {% wish_list_active request.COOKIES.gimsap_device related_item.id %} ">
+                                    <i class="fas fa-heart"
+                                       onclick="add_or_remove_wishlist({{ related_item.id }},'{% add_or_delete_tag request.COOKIES.gimsap_device related_item.id %}')"></i>
+                                </button>
+                                <a class="product-image mx-auto" href="{{ related_item.get_absolute_url }}"><img
+                                        src="{{ related_item.imageURL }}"
+                                        alt="product" style="width:178px; max-height:178px;object-fit:fill"></a>
+                                <div class="product-widget">
+
+                                    <a
+                                            title="Product View"
+                                            href="#" class="fas fa-eye" data-bs-toggle="modal"
+                                            data-bs-target="#detail-product-view{{ related_item.id }}"></a>
+
+                                </div>
+
+                            </div>
+                            <div class="product-content">
+
+                                <h6 class="product-name fw-bold"><a
+                                        href="{{ related_item.get_absolute_url }}">{{ related_item.name|truncatechars:35 }}</a>
+                                </h6>
+                                <h6 class="product-price">
+                                    {% if related_item.discount %}
+                                        <del>${{ related_item.price }}</del>
+                                        <span>${{ related_item.discount }}<small>/discount</small></span>
+                                    {% else %}
+                                        <span>${{ related_item.price }}  </span>
+                                    {% endif %}</h6>
+                                <button class="product-add" title="Add to Cart"><i
+                                        class="fas fa-shopping-basket"></i><span>add</span>
+                                </button>
+                                <div class="product-action">
+                                    <button class=""
+                                            title="Quantity Minus"><i
+                                            class="icofont-minus"
+                                            onclick="addAndRemoveFromCart({{ related_item.id }},'remove')"></i>
+                                    </button>
+                                    <input type="hidden" id="{{ related_item.id }}_id_item_id"
+                                           class="{{ related_item.id }}_id_item_id"
+                                           name="item_id"
+                                           value="{{ related_item.id }}">
+                                    <input class="action-input {{ related_item.id }}_id_item_count"
+                                           title="Quantity Number"
+                                           name="item_count"
+                                           id="{{ related_item.id }}_id_item_count"
+                                           type="text"
+                                           value="{% item_quantity request.COOKIES.gimsap_device related_item.id %}">
+                                    <button class="" title="Quantity Plus"><i
+                                            class="icofont-plus"
+                                            onclick="addAndRemoveFromCart({{ related_item.id }},'add')"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="detail-product-view{{ related_item.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <button class="modal-close icofont-close"
+                                        data-bs-dismiss="modal"></button>
+                                <div class="product-view">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-gallery"
+                                                 style="height: 100%; ">
+
+                                                <ul class="preview-slider slider-arrow" style="height: 100%">
+                                                    <li><img src="{{ related_item.imageURL }}" alt="product"
+                                                             style="object-fit: contain;max-height: 317px;min-height: 200px;">
+                                                    </li>
+                                                </ul>
+                                                <ul class="thumb-slider">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-details">
+
+                                                <h3
+                                                        class="view-name"
+                                                        style="white-space: pre-line !important;  ">
+                                                    <a href="{{ related_item.get_absolute_url }}">
+                                                        {{ related_item.name|safe }}</a>
+                                                </h3>
+
+                                                <div class="view-rating"><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i>
+                                                    ({{ related_item.review_count }}
+                                                    reviews)
+                                                </div>
+                                                <h3 class="view-price">
+                                                    {% if related_item.discount %}
+                                                        <del>${{ related_item.price }}</del>
+                                                        <span>${{ related_item.discount }}<small>/discount</small></span>
+                                                    {% else %}
+                                                        <span>${{ related_item.price }}</span>
+                                                    {% endif %}</h3>
+                                                <p class="view-desc">{{ related_item.description|safe }}</p>
+
+
+                                                <div class="view-add-group">
+                                                    <button class="product-add" title="Add to Cart"><i
+                                                            class="fas fa-shopping-basket"></i><span>add to cart</span>
+                                                    </button>
+                                                    <div class="product-action">
+                                                        <button class=""
+                                                                title="Quantity Minus"><i
+                                                                class="icofont-minus"
+                                                                onclick="addAndRemoveFromCart({{ related_item.id }},'remove')"></i>
+                                                        </button>
+                                                        <input type="hidden"
+                                                               id="{{ related_item.id }}_id_item_id"
+                                                               class="{{ related_item.id }}_id_item_id"
+                                                               name="item_id"
+                                                               value="{{ related_item.id }}">
+                                                        <input class="action-input {{ related_item.id }}_id_item_count"
+                                                               title="Quantity Number"
+                                                               name="item_count"
+                                                               id="{{ related_item.id }}_id_item_count"
+                                                               type="text"
+                                                               value="{% item_quantity request.COOKIES.gimsap_device related_item.id %}">
+                                                        <button class="" title="Quantity Plus"><i
+                                                                class="icofont-plus"
+                                                                onclick="addAndRemoveFromCart({{ related_item.id }},'add')"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="details-action-group">
+                                                    <button class="product-add btn-outline-success "
+                                                            type="submit"
+                                                            title="Add Your Wishlist"
+                                                            onclick="add_or_remove_wishlist({{ related_item.id }},'{% add_or_delete_tag request.COOKIES.gimsap_device related_item.id %}')">
+                                                        <i
+                                                                class="icofont-heart"></i><span>{% add_or_delete_tag request.COOKIES.gimsap_device related_item.id %}  wishlist</span>
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-btn-25"><a href="{{ item.category.get_absolute_url }}"
+                                                   class="btn btn-outline"><i
+                            class="fas fa-eye"></i><span>view all related</span></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+

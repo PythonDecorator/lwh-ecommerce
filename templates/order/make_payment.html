@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>Payment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Payment</li>
+            </ol>
+        </div>
+
+
+    </section>
+
+    <section class="inner-section checkout-part">
+        <div class="container">
+            <div class="account-card shadow">
+                <div class="account-title">
+                    <h4>Make Payment</h4>
+
+                </div>
+                <div class="account-content">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="account-card shadow">
+                                <div class="account-title">
+                                    <h4 class="custom_order_titles"> Order Details</h4>
+                                </div>
+                                <div class="account-content">
+                                    <ul class="invoice-details">
+                                        <li>
+                                            <h6 class="custom_order_titles">Total Item </h6>
+                                            <p>{{ order.get_total_item_count }} Items</p>
+                                        </li>
+
+                                        {% if order.delivery_method == 'PICKUP' %}
+                                            <li>
+                                                <h6 class="custom_order_titles">Delivery Place</h6>
+                                                <p>{{ order.pickup_address.name }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Delivery Location </h6>
+                                                <p>{{ order.pickup_address.location }}</p>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <h6 class="custom_order_titles">Country </h6>
+                                                <p>{{ order.shipping_address.country }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">State </h6>
+                                                <p>{{ order.shipping_address.state }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Zip Code </h6>
+                                                <p>{{ order.shipping_address.zip_code }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Street Address </h6>
+                                                <p>{{ order.shipping_address.street_address }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Apartment Address </h6>
+                                                <p>{{ order.shipping_address.apartment_address }}</p>
+                                            </li>
+
+                                            <li>
+                                                <h6 class="custom_order_titles">Shipping Routine</h6>
+                                                <p>{{ order.shipping_address.shipping_routine.routine }}</p>
+                                            </li>
+                                            <li>
+                                                <h6 class="custom_order_titles">Shipping Price</h6>
+                                                <p>${{ order.shipping_address.shipping_routine.price }}</p>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="account-card shadow">
+                                <div class="account-title">
+                                    <h4 class="custom_order_titles">Amount Details</h4>
+                                </div>
+                                <div class="account-content">
+                                    <ul class="invoice-details">
+                                        <li>
+                                            <h6 class="custom_order_titles">Sub Total</h6>
+                                            <p>${{ order.get_sub_total }}</p>
+                                        </li>
+                                        {% if order.coupon %}
+                                            <li>
+                                                <h6 class="custom_order_titles">discount</h6>
+                                                <p>%{{ order.coupon.percent }}</p>
+                                            </li>
+                                        {% endif %}
+                                        <li>
+                                            <h6 class="custom_order_titles">Delivery Method</h6>
+                                            <p>{{ order.delivery_method|title }}</p>
+                                        </li>
+                                        <li>
+                                            <h6 class="custom_order_titles">Total<small>(Incl. VAT)</small></h6>
+                                            <p>${{ order.get_total }}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% if order.get_total > 0 %}
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div style="position: relative; z-index: 1;">
+                                            <div id="smart-button-container" style="position: relative; z-index: 1;">
+                                                <div style="text-align: center;">
+                                                    <div id="paypal-button-container"></div>
+                                                </div>
+                                            </div>
+                                            <div id="smart-button-container" style="position: relative; z-index: 1;">
+                                                <div style="text-align: center;">
+                                                    <div id="paypal-button-container"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <form action="{% url 'order:make_payment' order.id %}" id="payment-form"
+                                              method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit"></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+    <script src="{{ paypal_client_url }}"
+            data-sdk-integration-source="button-factory"
+    ></script>
+
+    <script>
+        function initPayPalButton() {
+            paypal.Buttons({
+                style: {
+                    shape: 'pill',
+                    color: 'gold',
+                    layout: 'vertical',
+                    label: 'buynow',
+
+                },
+                createOrder: function (data, actions) {
+                    return fetch(`{% url 'order:create_paypal_order' %}`.toString(), {
+                        method: "post",
+                        headers: {'X-CSRFToken': csrftoken},
+                    })
+                        .then((response) => response.json())
+                        .then((order) => order.id);
+                },
+
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (orderData) {
+                        // Full available details
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        // Show a success message within this page, e.g.
+                        const element = document.getElementById('paypal-button-container');
+                        element.innerHTML = '';
+                        submit_order_form(orderData)
+                        Swal.fire({
+                            imageUrl: '{% static 'assets/images/logo.png' %}',
+                            imageHeight: 50,
+                            imageAlt: 'Gimsap',
+                            confirmButtonColor: '#ff3838',
+                            text: 'Payment Processing do not Refresh the page',
+                        })
+                    });
+                },
+
+                onError: function (err) {
+                    console.log(err);
+                }
+            }).render('#paypal-button-container');
+            console.log('done!');
+        }
+
+        initPayPalButton();
+    </script>
+
+
+{% endblock %}
+
+{# below are test codes #}
+
+{% comment %}
+createOrder: function (data, actions) {
+return actions.order.create({
+    purchase_units: [{
+        "amount": {
+            "currency_code": "USD",
+            "value": "{{ order.get_total }}"
+        }
+    }],
+    experience: {
+        input_fields: {
+            no_shipping: 1
+        }
+    }
+})},
+  onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (orderData) {
+
+                        // Full available details
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+                        // Show a success message within this page, e.g.
+                        const element = document.getElementById('paypal-button-container');
+                        element.innerHTML = '';
+                        element.innerHTML = '<h3></h3>';
+                        alert(`Payment Processing do not Refresh the page`);
+                        submit_order_form(orderData)
+
+                    });
+                },
+
+                 onApprove: function (data, actions) {
+                      return fetch(`{% url "order:capture_paypal_order" %}`, {
+                          method: "post",
+                          headers: {'X-CSRFToken': csrftoken},
+                          body: JSON.stringify({
+                              'id': data.orderID.toString(),
+                          }),
+                      }).then((response) => response.json())
+                          .then((orderData) => {
+                              // Successful capture! For dev/demo purposes:
+                              console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+                              var transaction = orderData.purchase_units[0].payments.captures[0];
+
+                              alert(`Transaction ${transaction.status}: ${transaction.id}
+                                  See console for all available details`);
+                              // When ready to go live, remove the alert and show a success message within this page. For example:
+                              // var element = document.getElementById('paypal-button-container');
+                              // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                              // submit_order_form(orderData)
+                          });
+                  },
+{% endcomment %}

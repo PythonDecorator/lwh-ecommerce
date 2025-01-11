@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+    <div class="user-form-card">
+        <div class="user-form-title">
+            <h2>Join Now!</h2>
+            <p>Setup A New Account In A Minute</p>
+        </div>
+        <div class="user-form-group">
+            <form class="user-form" method="post" action="{% url 'account_signup' %}" id="signup_form"
+                  style="display: flex; flex-direction: column">
+                {% csrf_token %}
+                <div class="row">
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                      {{ form|crispy }}
+                    <div class="row">
+                        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" value=""
+                                                            id="check"><label
+                                class="form-check-label" for="check">Accept all the <a href="{% url 'home:terms_and_condition' %}" style="color: red">Terms &
+                            Conditions</a></label>
+                        </div>
+                        <div class="form-button">
+                            <button type="submit">register</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="user-form-remind">
+        <p>Already Have An Account?<a href="{{ login_url }}">login here</a></p>
+    </div>
+{% endblock %}

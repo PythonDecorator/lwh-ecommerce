@@ -1,0 +1,627 @@
+{% extends 'base.html' %}
+{% load item_tags %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'assets/css/home-classic.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+    {% comment %}  <section class="home-index-slider slider-arrow slider-dots">
+        <div class="banner-part banner-1">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-content">
+                            <h1>Shop Now on Living Water Heritage.</h1>
+                            <p>Order your product now on Living Water Heritage and get your delivery on time with extra offers. you can
+                                get your coupon from our website</p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'items:items' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline"
+                                    href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get coupon</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-img">
+                            <img src="{% static 'assets/images/about/01.jpg' %}"
+                                 alt="index"
+                                 style="border-radius:25px;height: 450px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-part banner-2">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-img"><img src="{% static 'assets/images/about/02.jpg' %}" alt="index"
+                                                     style="border-radius:25px;height: 450px;">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-content">
+                            <h1>Order Your Beauty Products</h1>
+                            <p>We don’t just
+                                sell you food and beauty products; we help our customers with that nostalgic
+                                home-away-from-home gastronomical experience in Canada </p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'items:items' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline"
+                                    href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get coupon</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-part banner-2">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-img">
+                            <img
+                                    src="{% static 'assets/images/about/03.jpg' %}" alt="index"
+                                    style="border-radius:25px;height: 450px;">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-content">
+                            <h1>Living Water Heritage Package Delivery Products </h1>
+                            <p>We package our products in a good manner for the benefit of our customer and also provide
+                                them with good resources. </p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'items:items' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline"
+                                    href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get coupon</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-part banner-2">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-img">
+                            <img
+                                    src="{% static 'assets/images/about/04.jpg' %}" alt="index"
+                                    style="border-radius:25px;height: 450px;">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="banner-content">
+                            <h1>Order Your Items on Living Water Heritage .</h1>
+                            <p>Get your foodstuff on Living Water Heritage, and you will be provided discount for purchasing our
+                                products . You can also be among the lucky ones to get Coupon on festive periods. </p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'items:items' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline"
+                                    href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get coupon</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>{% endcomment %}
+    <section class="home-classic-slider slider-arrow" style="background: gray">
+        <div class="banner-part"
+             style="background: url({% static 'assets/images/about/01.jpg' %}) no-repeat center;
+                     height:inherit !important;
+                     background-size: cover;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-lg-6">
+                        <div class="banner-content">
+                            <h1>Shop Now On Living Water Heritage And Get Free Coupon</h1>
+                            <p>Order your product now on Living Water Heritage and get your delivery on time with extra offers. you can
+                                get your coupon from our website</p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'home:home_page' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline" href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-part" style="background: url({% static 'assets/images/about/02.jpg' %}) no-repeat center;
+                height:inherit !important;
+                background-size: cover;
+                ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-11 col-lg-7 mx-auto">
+                        <div class="banner-content text-center">
+                            <h1>Order Your Beauty Products on Living Water Heritage </h1>
+                            <p>We don’t just
+                                sell you food and beauty products; we help our customers with that nostalgic
+                                home-away-from-home gastronomical experience in Canada</p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'home:home_page' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline" href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-part"
+             style="background: url({% static 'assets/images/about/04.jpg' %}) no-repeat center;
+                     height:inherit !important;
+                     background-size: cover;
+                     ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-11 col-lg-7 mx-auto">
+                        <div class="banner-content">
+                            <h1>Order products on Living Water Heritage </h1>
+                            <p>On Living Water Heritage we provide a way for you to Order products by shipping or schedule your pickup
+                                at your convenience to get cheaper rate </p>
+                            <div class="banner-btn"><a class="btn btn-inline" href="{% url 'home:home_page' %}"><i
+                                    class="fas fa-shopping-basket"></i><span>shop now</span></a><a
+                                    class="btn btn-outline" href="{% url 'home:offer_page' %}"><i
+                                    class="icofont-sale-discount"></i><span>get offer</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section suggest-part">
+        <div class="container">
+            <ul class="suggest-slider slider-arrow ">
+                {% for item in Categorys %}
+                    <li class=""><a class="suggest-card " href="{{ item.get_absolute_url }}"><img
+                            src="{{ item.imageURL }}" alt="suggest"
+                            style="object-fit: contain;width: 173px;height: 83px"
+                    >
+                        <h5>
+                            {{ item.name|safe|truncatewords:5 }}
+                            <span>
+                        {% if item.items_count  > 1 %}
+                            {{ item.items_count }} items
+                        {% elif item.items_count == 1 %}
+                            {{ item.items_count }} item
+
+                        {% endif %}
+                    </span>
+                        </h5>
+                    </a>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    <section class="section recent-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2> Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                {% for item in Item %}
+                    <div class="col">
+                        <div class="product-card shadow">
+                            <div class="product-media">
+                                <div class="product-label"><label class="label-text sale">sale</label></div>
+                                <button class="product-wish wish {% wish_list_active request.COOKIES.gimsap_device item.id %}"
+                                        onclick="add_or_remove_wishlist({{ item.id }}, '{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}')"
+                                >
+                                    <i class="fas fa-heart"></i></button>
+
+                                <a class="product-image" href="{{ item.get_absolute_url }}">
+                                    <img src="{{ item.imageURL }}" alt="product"
+                                         style="max-width:178px; height:178px;object-fit:contain">
+                                </a>
+
+                                <div class="product-widget">
+
+                                    <a
+                                            title="Product View"
+                                            href="#" class="fas fa-eye" data-bs-toggle="modal"
+                                            data-bs-target="#product-view{{ item.id }}"></a>
+
+                                </div>
+                            </div>
+                            <div class="product-content">
+
+                                <h6 class="product-name fw-bold"><a
+                                        href="{{ item.get_absolute_url }}">{{ item.name|safe|truncatechars:40 }}</a>
+                                </h6>
+                                <h6 class="product-price">
+                                    {% if item.discount %}
+                                        <del>${{ item.price }}</del>
+                                        <span>${{ item.discount }}<small>/discount</small></span>
+                                    {% else %}
+                                        <span>${{ item.price }}</span>
+                                    {% endif %}
+                                </h6>
+                                <button class="product-add" title="Add to Cart"><i
+                                        class="fas fa-shopping-basket"></i><span>add</span></button>
+                                <div class="product-action">
+                                    <button class=""
+                                            title="Quantity Minus"><i
+                                            class="icofont-minus"
+                                            onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                    </button>
+                                    <input type="hidden" id="{{ item.id }}_id_item_id" class="{{ item.id }}_id_item_id"
+                                           name="item_id"
+                                           value="{{ item.id }}">
+                                    <input class="action-input {{ item.id }}_id_item_count"
+                                           title="Quantity Number"
+                                           name="item_count"
+                                           id="{{ item.id }}_id_item_count"
+                                           type="text"
+                                           value="{% item_quantity request.COOKIES.gimsap_device item.id %}">
+                                    <button class="" title="Quantity Plus"><i
+                                            class="icofont-plus"
+                                            onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="product-view{{ item.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <button class="modal-close icofont-close"
+                                        data-bs-dismiss="modal"></button>
+                                <div class="product-view">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-gallery"
+                                                 style="height: 100%; ">
+
+                                                <ul class="preview-slider slider-arrow" style="height: 100%">
+                                                    <li><img src="{{ item.imageURL }}" alt="product"
+                                                             style="object-fit: contain;max-height: 317px;min-height: 200px;">
+                                                    </li>
+                                                </ul>
+                                                <ul class="thumb-slider">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-details">
+
+                                                <h3
+                                                        class="view-name"
+                                                        style="white-space: pre-line !important;  ">
+                                                    <a href="{{ item.get_absolute_url }}">
+                                                        {{ item.name|safe }}</a>
+                                                </h3>
+
+                                                <div class="view-rating"><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i>
+                                                    ({{ item.review_count }}
+                                                    reviews)
+                                                </div>
+                                                <h3 class="view-price">
+                                                    {% if item.discount %}
+                                                        <del>${{ item.price }}</del>
+                                                        <span>${{ item.discount }}<small>/discount</small></span>
+                                                    {% else %}
+                                                        <span>${{ item.price }}</span>
+                                                    {% endif %}</h3>
+                                                <p class="view-desc">{{ item.description|safe }}</p>
+
+
+                                                <div class="view-add-group">
+                                                    <button class="product-add" title="Add to Cart"><i
+                                                            class="fas fa-shopping-basket"></i><span>add to cart</span>
+                                                    </button>
+                                                    <div class="product-action">
+                                                        <button class=""
+                                                                title="Quantity Minus"><i
+                                                                class="icofont-minus"
+                                                                onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                                        </button>
+                                                        <input type="hidden"
+                                                               id="{{ item.id }}_id_item_id"
+                                                               class="{{ item.id }}_id_item_id"
+                                                               name="item_id"
+                                                               value="{{ item.id }}">
+                                                        <input class="action-input {{ item.id }}_id_item_count"
+                                                               title="Quantity Number"
+                                                               name="item_count"
+                                                               id="{{ item.id }}_id_item_count"
+                                                               type="text"
+                                                               value="{% item_quantity request.COOKIES.gimsap_device item.id %}">
+                                                        <button class="" title="Quantity Plus"><i
+                                                                class="icofont-plus"
+                                                                onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="details-action-group">
+                                                    <button class="product-add btn-outline-success "
+                                                            type="submit"
+                                                            title="Add Your Wishlist"
+                                                            onclick="add_or_remove_wishlist({{ item.id }},'{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}')">
+                                                        <i
+                                                                class="icofont-heart"></i><span>{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}  wishlist</span>
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-btn-25"><a href="{% url 'items:items' %}" class="btn btn-outline"><i
+                            class="fas fa-eye"></i><span>show more</span></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="section promo-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="promo-img"><a href=""><img src="{% static 'assets/images/promo/home/03.jpg' %}"
+                                                           alt="promo" style="object-fit: contain"></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="section feature-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>our featured items</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2">
+                {% for item in Featured %}
+                    <div class="col">
+                        <div class="feature-card shadow">
+                            <div class="feature-media" style="height: 100% !important;">
+                                <div class="feature-label"><label class="label-text feat">feature</label></div>
+
+                                <button class="float-start product-wish wish {% wish_list_active request.COOKIES.gimsap_device item.id %}"
+                                        onclick="add_or_remove_wishlist({{ item.id }}, '{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}')"
+                                >
+                                    <i class="fas fa-heart"></i></button>
+
+                                <a class="feature-image" href="{{ item.get_absolute_url }}"
+                                   style=" height: 100% !important;    display: flex !important;
+                                                justify-content: center;
+                                                align-items: center;
+                                            ">
+                                    <img
+                                            src="{{ item.imageURL }}"
+                                            alt="product"
+                                            style="height: 190px;max-height: 220px;width:160px;object-fit: contain;align-self: center !important;"></a>
+                                <div
+                                        class="feature-widget">
+                                    <a
+                                            title="Product View"
+                                            href="#" class="fas fa-eye" data-bs-toggle="modal"
+                                            data-bs-target="#feature-product-view{{ item.id }}"></a>
+                                </div>
+
+                            </div>
+                            <div class="feature-content" style="margin-left: 2px !important;">
+                                <h6 class="feature-name fw-bold"><a
+                                        href="{{ item.get_absolute_url }}">{{ item.name|safe|truncatechars:26 }} </a>
+                                </h6>
+
+                                <h6 class="feature-price">
+                                    {% if item.discount %}
+                                        <del>${{ item.price }}</del>
+                                        <span>${{ item.discount }}<small>/discount</small></span>
+                                    {% else %}
+                                        <span>${{ item.price }}</span>
+                                    {% endif %}</h6>
+                                <p class="feature-desc">{{ item.description|safe|truncatechars:91 }}
+
+                                </p>
+                                <button class="product-add" title="Add to Cart"><i
+                                        class="fas fa-shopping-basket"></i><span>add</span></button>
+                                <div class="product-action">
+                                    <button class=""
+                                            title="Quantity Minus"><i
+                                            class="icofont-minus"
+                                            onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                    </button>
+                                    <input type="hidden" id="{{ item.id }}_id_item_id" class="{{ item.id }}_id_item_id"
+                                           name="item_id"
+                                           value="{{ item.id }}">
+                                    <input class="action-input {{ item.id }}_id_item_count"
+                                           title="Quantity Number"
+                                           name="item_count"
+                                           id="{{ item.id }}_id_item_count"
+                                           type="text"
+                                           value="{% item_quantity request.COOKIES.gimsap_device item.id %}">
+                                    <button class="" title="Quantity Plus"><i
+                                            class="icofont-plus"
+                                            onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="feature-product-view{{ item.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <button class="modal-close icofont-close"
+                                        data-bs-dismiss="modal"></button>
+                                <div class="product-view">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-gallery"
+                                                 style="height: 80%; ">
+
+                                                <ul class="preview-slider slider-arrow" style="">
+                                                    <li><img src="{{ item.imageURL }}" alt="product"
+                                                             style="object-fit: contain;max-height: 317px;min-height: 200px;">
+                                                    </li>
+                                                </ul>
+                                                <ul class="thumb-slider">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <div class="view-details">
+
+                                                <h3
+                                                        class="view-name"
+                                                        style="white-space: pre-line !important;  ">
+                                                    <a href="{{ item.get_absolute_url }}">
+                                                        {{ item.name|safe }}</a>
+                                                </h3>
+
+                                                <div class="view-rating"><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i><i
+                                                        class="active icofont-star"></i>
+                                                    ({{ item.review_count }}
+                                                    reviews)
+                                                </div>
+                                                <h3 class="view-price">
+                                                    {% if item.discount %}
+                                                        <del>${{ item.price }}</del>
+                                                        <span>${{ item.discount }}<small>/discount</small></span>
+                                                    {% else %}
+                                                        <span>${{ item.price }}</span>
+                                                    {% endif %}</h3>
+                                                <p class="view-desc">{{ item.description|safe }}</p>
+
+
+                                                <div class="view-add-group">
+                                                    <button class="product-add" title="Add to Cart"><i
+                                                            class="fas fa-shopping-basket"></i><span>add to cart</span>
+                                                    </button>
+                                                    <div class="product-action">
+                                                        <button class=""
+                                                                title="Quantity Minus"><i
+                                                                class="icofont-minus"
+                                                                onclick="addAndRemoveFromCart({{ item.id }},'remove')"></i>
+                                                        </button>
+                                                        <input type="hidden"
+                                                               id="{{ item.id }}_id_item_id"
+                                                               class="{{ item.id }}_id_item_id"
+                                                               name="item_id"
+                                                               value="{{ item.id }}">
+                                                        <input class="action-input {{ item.id }}_id_item_count"
+                                                               title="Quantity Number"
+                                                               name="item_count"
+                                                               id="{{ item.id }}_id_item_count"
+                                                               type="text"
+                                                               value="{% item_quantity request.COOKIES.gimsap_device item.id %}">
+                                                        <button class="" title="Quantity Plus"><i
+                                                                class="icofont-plus"
+                                                                onclick="addAndRemoveFromCart({{ item.id }},'add')"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="details-action-group">
+                                                    <button class="product-add btn-outline-success "
+                                                            type="submit"
+                                                            title="Add Your Wishlist"
+                                                            onclick="add_or_remove_wishlist({{ item.id }},'{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}')">
+                                                        <i
+                                                                class="icofont-heart"></i><span>{% add_or_delete_tag request.COOKIES.gimsap_device item.id %}  wishlist</span>
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-btn-25"><a href="{% url 'items:featured_items' %}" class="btn btn-outline"><i
+                            class="fas fa-eye"></i><span>show more</span></a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="section promo-part d-none d-md-flex">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+                    <div class="promo-img"><a href=""><img src="{% static 'assets/images/about/02.jpg' %}"
+                                                           alt="promo" style="width: 450px;object-fit: contain;"></a>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+                    <div class="promo-img"><a href=""><img src="{% static 'assets/images/about/03.jpg' %}"
+                                                           alt="promo" style="width: 450px;object-fit: contain;"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section testimonial-part ">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading">
+                        <h2>What our client's say</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="testimonial-slider slider-arrow">
+                        {% for item in Testimonials %}
+
+                            <div class="testimonial-card shadow"><i class="fas fa-quote-left"></i>
+                                <p>{{ item.text|truncatewords:20 }}</p>
+                                <h5>{{ item.author_name }}</h5>
+                                <ul>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fas fa-star"></li>
+                                </ul>
+                                <img src="{{ item.profile_photo_url }}" alt="testimonial"></div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

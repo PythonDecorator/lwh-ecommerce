@@ -1,0 +1,77 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load crispy_forms_filters %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6 col-xl-6 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Create</h6>
+                    <form action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-success">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-6 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-baseline mb-2">
+                        <h6 class="card-title mb-0">Pickup Locations</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                            <tr>
+
+                                <th class="pt-0">#</th>
+                                <th class="pt-0">Name</th>
+                                <th class="pt-0">Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>
+
+                                        <a href="{% url 'order:dashboard_pickup_delete' item.id %}" class="text-danger">
+                                            <i data-feather="trash"></i>
+                                        </a>
+                                    </td>
+                                    <td> {{ item.name }}</td>
+                                    <td>{{ item.location }}</td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row pt-5 mt-5">
+                            {% if items.has_other_pages %}
+                                <ul class="pagination">
+
+                                    {% for i in items.paginator.page_range %}
+                                        {% if items.number == i %}
+
+                                            <li class="page-item"><a class="page-link bg-success text-white">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Amazing Products",
+    "id": 8,
+    "link": "https://gimsap.ca/collections/all",
+    "image": "https://cdn.shopify.com/s/files/1/0495/6933/3413/files/GIMSAP_Approved_Logo_2_540x.png?v=1606137685",
+    "products": [
+      {
+        "id": 423,
+        "link": "https://gimsap.ca/collections/all/products/creme-of-nature-argan-oil-intensive-cond-treatment-20oz",
+        "name": "Creme of Nature Argan Oil Intensive Cond. Treatment (20oz)",
+        "price": "14.50",
+        "description": "The Creme of Nature Argan Oil Intensive Conditioning Treatment is a deep conditioning treatment that restores the natural moisture and sheen of your hair. This product is a leave-in conditioner that contains Moroccan Argan Oil and moisturizing shea butter. It is made to repair damaged hair and restore the health of your hair. This product also has a scent that is reminiscent of the ocean.",
+        "image_url": "https://cdn.shopify.com/s/files/1/0495/6933/3413/products/images_de08ac58-81e9-4901-9c74-c4f0b265df19_1000x1000.jpg?v=1645133729"
+      },
+       {
+        "id": 256,
+        "link": "https://gimsap.ca/collections/all/products/carotone-b-s-c-maxi-effect-30ml",
+        "name": "Carotone Black Spot Corrector (B.S.C.) Maxi Effect 30mL",
+        "price": "4.99",
+        "description": "Carotone Black Spot Corrector (B.S.C.) Maxi Effect&nbsp; is a new formula that is supposed to help boost collagen production and firm skin. It helps reduce the appearance of dark spots caused by acnes, blemishes and hyperpigmentation.",
+        "image_url": "https://cdn.shopify.com/s/files/1/0495/6933/3413/products/CCAROTOR-1_1000x1000.jpg?v=1647972436"
+      }
+    ]
+  }
+]

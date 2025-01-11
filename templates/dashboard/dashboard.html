@@ -1,0 +1,453 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="Gimsap">
+    <meta name="keywords"
+          content="gimsap, ecommerce,shop,order,product, web">
+
+    <title>Gimsap Dashboard</title>
+    <link rel="icon" href="{% static 'assets/images/logoicon.png' %}">
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,300;1,400&display=swap"
+          rel="stylesheet">
+
+    <!-- core:css -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/vendors/core/core.css' %}">
+    <!-- endinject -->
+
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet"
+          href="{% static 'dashboard/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
+    <!-- End plugin css for this page -->
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/fonts/feather-font/css/iconfont.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <!-- endinject -->
+
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/css/style.min.css' %}">
+    <!-- End layout styles -->
+
+    <link rel="shortcut icon" href="{% static 'assets/images/logoicon.png' %}"/>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        .form-group {
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            color: #F41717 !important;
+            border-color: whitesmoke;
+        }
+
+        svg {
+            color: #343434;
+            border-color: whitesmoke;
+        }
+
+        svg:hover {
+            color: #F41717 !important;
+            border-color: whitesmoke;
+
+        }
+
+        a:hover {
+            color: #F41717 !important;
+            border-color: whitesmoke;
+
+        }
+
+        .custom_order_titles {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        {% comment %} .sidebar-header {
+             background: #F41717 !important;
+             color: white !important;
+         }
+         {% endcomment %}
+
+        .primary-text {
+            color: #F41717;
+        }
+
+        .sidebar-body {
+            background: #2f0f0f !important;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .sidebar-toggler {
+            color: white !important;
+        }
+
+        .sidebar-brand {
+            color: white !important;
+        }
+    </style>
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body class="sidebar-light">
+<div class="main-wrapper">
+
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'home:home_page' %}" class="sidebar-brand">
+                <img src="{% static 'assets/images/logo.png' %}"
+                     alt="logo" style="object-fit: contain;width: 50%">
+            </a>
+            <div class="sidebar-toggler not-active">
+                <span style="color:gray !important;width: 20px"></span>
+                <span style="color:gray !important;"></span>
+                <span style="color:gray !important;"></span>
+            </div>
+        </div>
+        <div class="sidebar-body">
+            <ul class="nav">
+                <li class="nav-item nav-category">Main</li>
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:dashboard_page' %}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'home:dashboard_contact_list_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="mail"></i>
+                        <span class="link-title">Email</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">Product</li>
+                <li class="nav-item">
+                    <a href="{% url 'items:item_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">Product Create</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'items:dashboard_items' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'items:active_items_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">Active Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'items:inactive_inactive_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">InActive Product</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">Category</li>
+                <li class="nav-item">
+                    <a href="{% url 'items:dashboard_category_list_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="layers"></i>
+                        <span class="link-title">Category</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">Order</li>
+                <li class="nav-item">
+                    <a href="{% url 'order:dashboard_order_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-cart"></i>
+                        <span class="link-title">Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'order:dashboard_active_order_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-cart"></i>
+                        <span class="link-title">Active Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'order:dashboard_inactive_order_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-cart"></i>
+                        <span class="link-title">InActive Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-category">Coupon</li>
+                <li class="nav-item">
+                    <a href="{% url 'dashboard:coupon_create_list' %}" class="nav-link">
+                        <i class="link-icon" data-feather="credit-card"></i>
+                        <span class="link-title">Create Coupon</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">Pickup Location</li>
+                <li class="nav-item">
+                    <a href="{% url 'order:dashboard_pickup_list_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="shopping-bag"></i>
+                        <span class="link-title">Create Pickup</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-category">Shipping Routine</li>
+                <li class="nav-item">
+                    <a href="{% url 'order:dashboard_routine_list_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="truck"></i>
+                        <span class="link-title">Create Routine</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">FAQ</li>
+                <li class="nav-item">
+                    <a href="{% url 'home:dashboard_faq_list_create' %}" class="nav-link">
+                        <i class="link-icon" data-feather="users"></i>
+                        <span class="link-title">Create FAQ</span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+    <nav class="settings-sidebar">
+        <div class="sidebar-body hidden" style="display: none">
+            <a href="#" class="settings-sidebar-toggler">
+                <i data-feather="settings"></i>
+            </a>
+            <h6 class="text-muted mb-2">Sidebar:</h6>
+            <div class="mb-3 pb-3 border-bottom">
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight"
+                           value="sidebar-light">
+                    <label class="form-check-label" for="sidebarLight">
+                        Light
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarDark"
+                           value="sidebar-light" checked>
+                    <label class="form-check-label" for="sidebarDark">
+                        Dark
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- partial -->
+
+    <div class="page-wrapper">
+
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar">
+            <a href="#" class="sidebar-toggler">
+                <i data-feather="menu"></i>
+            </a>
+            <div class="navbar-content">
+
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="link-icon" data-feather="mail"></i>
+
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
+                            <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+                                <p> New Messages</p>
+
+                            </div>
+                            {% for contact in contacts %}
+                                <div class="p-1">
+                                    <a href="{% url 'home:dashboard_contact_detail' contact.id %}"
+                                       class="dropdown-item d-flex align-items-center py-2">
+                                        <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
+                                            <i class="icon-sm" data-feather="mail"></i>
+                                        </div>
+                                        <div class="flex-grow-1 me-2">
+                                            <p>{{ contact.name }}</p>
+                                            <p class="tx-12 text-muted">{{ contact.timestamp|timesince }}
+                                                ago</p>
+                                        </div>
+                                    </a>
+
+                                </div>
+                            {% endfor %}
+
+                            <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
+                                <a href="{% url 'home:dashboard_contact_list_create' %}">View all</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% if new_orders_count > 0 %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="bell"></i>
+                                {% comment %}<div class="indicator">
+                                    <div class="circle"></div>
+                                </div>{% endcomment %}
+
+                            </a>
+                            <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
+                                <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+                                    <p>{{ new_orders_count }} New Orders</p>
+
+                                </div>
+                                {% for new_order in new_orders %}
+                                    <div class="p-1">
+                                        <a href="{{ new_order.get_dashboard_absolute_url }}"
+                                           class="dropdown-item d-flex align-items-center py-2">
+                                            <div class="wd-30 ht-30 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3">
+                                                <i class="icon-sm " data-feather="shopping-cart"></i>
+                                            </div>
+                                            <div class="flex-grow-1 me-2">
+                                                <p>New Order Received</p>
+                                                <p class="tx-12 text-muted">{{ new_order.ordered_date|timesince }}
+                                                    ago</p>
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+                                {% endfor %}
+
+                                <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
+                                    <a href="{% url 'order:dashboard_active_order_list' %}">View all</a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="wd-30 ht-30 rounded-circle"
+                                    {% if request.user.customer.imageURL %}
+                                 src="{{ request.user.customer.imageURL }}"
+                                    {% else %}
+                                 src="{% static 'assets/images/user.png' %}"
+                                    {% endif %}
+                                 alt="profile">
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                            <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+                                <div class="mb-3">
+                                    <img class="wd-80 ht-80 rounded-circle"
+                                            {% if request.user.customer.imageURL %}
+                                         src="{{ request.user.customer.imageURL }}"
+                                            {% else %}
+                                         src="{% static 'assets/images/user.png' %}"
+                                            {% endif %} alt="">
+                                </div>
+                                <div class="text-center">
+                                    <p class="tx-16 fw-bolder">{{ request.user.customer.first_name }} {{ request.user.customer.last_name }}</p>
+                                    <p class="tx-12 text-muted">{{ request.user.email }}</p>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled p-1">
+                                <li class="dropdown-item py-2">
+                                    <a href="{% url 'user:profile_page' %}" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="user"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                </li>
+
+                                <li class="dropdown-item py-2">
+                                    <a href="{% url 'account_logout' %}" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="log-out"></i>
+                                        <span>Log Out</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="page-content">
+
+            {% block content %}
+
+
+            {% endblock %}
+        </div>
+
+
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between px-4 py-3 border-top small">
+            <p class="text-muted mb-1 mb-md-0">Copyright © 2022 <a href="{% url 'home:home_page' %}" target="_blank">Gimsap</a>.
+            </p>
+
+        </footer>
+        <!-- partial -->
+
+    </div>
+</div>
+
+<!-- core:js -->
+<script src="{% static 'dashboard/assets/vendors/core/core.js' %}"></script>
+<!-- endinject -->
+
+<!-- Plugin js for this page -->
+<script src="{% static 'dashboard/assets/vendors/chartjs/Chart.min.js' %}"></script>
+<script src="{% static 'dashboard/assets/vendors/jquery.flot/jquery.flot.js' %}"></script>
+<script src="{% static 'dashboard/assets/vendors/jquery.flot/jquery.flot.resize.js' %}"></script>
+<script src="{% static 'dashboard/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'dashboard/assets/vendors/apexcharts/apexcharts.min.js' %}"></script>
+<!-- End plugin js for this page -->
+
+<!-- inject:js -->
+<script src="{% static 'dashboard/assets/vendors/feather-icons/feather.min.js' %}"></script>
+<script src="{% static 'dashboard/assets/js/template.js' %}"></script>
+<!-- endinject -->
+
+<!-- Custom js for this page -->
+<script src="{% static 'dashboard/assets/js/dashboard-light.js' %}"></script>
+<script src="{% static 'dashboard/assets/js/datepicker.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.25/dist/sweetalert2.all.min.js"></script>
+
+<!-- End custom js for this page -->
+<script>
+    window.addEventListener('load', (event) => {
+        {% for message in messages %}
+            console.log("{{ message.tags }}")
+            Swal.fire({
+                imageUrl: '{% static 'assets/images/logo.png' %}',
+                imageHeight: 50,
+                imageAlt: 'Gimsap',
+                confirmButtonColor: '#ff3838',
+                text: '{{ message }}',
+            })
+        {% endfor %}
+
+        console.log('page is fully loaded');
+    });
+</script>
+</body>
+
+</html>

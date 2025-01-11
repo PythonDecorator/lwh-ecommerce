@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <section class="coming-part">
+        <div class="container">
+            <div class="row align-items-center" style="min-height: 80vh">
+                <div class="col-lg-7">
+                    <div class="coming-content">
+                        <h1 class="coming-title">coming soon...</h1>
+
+                        <h3 class="coming-subtitle">We are currently working on new features. Subscribe to our
+                            newsletter to stay updated.</h3>
+                        <form class="coming-form" method="post" id="subscription_form"
+                              action="{% url 'home:subscribe' %}">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Enter Your Email Address" name="subscribe_email">
+                            <button><i class="icofont-paper-plane"></i></button>
+                        </form>
+                        <div class="coming-social" style="width: 100%">
+                            <a class="icofont-facebook" href="{{ gimsap_facebook }}"></a>
+                            <a class="icofont-instagram" href="{{ gimsap_instagram }}"></a>
+
+                            <a class="icofont-twitter hidden " href="#" style="display: none"></a><a
+                                class="icofont-linkedin" href="#" style="display: none"></a>
+                            <a class="icofont-pinterest" href="#" style="display: none"></a></div>
+                    </div>
+                </div>
+                <div class="col-lg-5 ">
+                    <img
+                            class="img-fluid"
+                            src="{% static 'assets/images/coming-soon.jpg' %}"></div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

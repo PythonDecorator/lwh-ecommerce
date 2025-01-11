@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="error-part">
+        <div class="container">
+            <h3 class="text-danger">503 | Maintenance Mode</h3><img class="img-fluid" src="{% static 'assets/images/errors/503.png' %}"
+                                                alt="error" style="max-height: 60vh">
+            <p>Website is under maintenance .We are improving our website with cool new features.</p>
+            <p> Please try again later.</p>
+        </div>
+    </section>
+{% endblock %}

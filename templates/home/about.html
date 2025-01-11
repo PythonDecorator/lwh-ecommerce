@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;display: block !important;
+                     margin-top:0 !important;">
+        <div class="container">
+            <h3 class="text-white text-capitalize">About Our Company</h3>
+        </div>
+    </section>
+    <section class="inner-section about-company">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h2>Our Motive is to Provide Best for Those Who Deserve</h2>
+                        <p style="line-height: 38px;">GIMSAP MARKT INC. is a small family-run business based in
+                            Calgary, AB; nestled against the
+                            foothills of the Rockies. Our outlets are open in the north and south-central ends of the
+                            city for your convenience. We stock quality beauty products, food products and spices from
+                            West Africa, East Africa and some parts of South America. Our poultry and sea-food section
+                            stocks many varieties of delicacies peculiar to these regions. At GIMSAP NW, we don’t just
+                            sell you food and beauty products; we help our customers with that nostalgic
+                            home-away-from-home gastronomical experience in Canada.</p>
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-img"><img src="{% static 'assets/images/about/01.jpg' %}" alt="about"><img
+                            src="{% static 'assets/images/about/02.jpg' %}"
+                            alt="about"><img
+                            src="{% static 'assets/images/about/03.jpg' %}" alt="about"><img
+                            src="{% static 'assets/images/about/04.jpg' %}" alt="about"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="inner-section about-testimonial"
+             style="background-image: url('{% static "assets/images/testimonial-shape.png" %}')">
+        <div class="container">
+            <h3 class="font-weight-bolder text-center" style="font-weight: bolder;font-style: italic;">
+                What Our
+                Customers Think</h3>
+            <br>
+            <ul class="testi-slider slider-arrow">
+                {% for item in Testimonials %}
+                    <li>
+                        <div class="testi-content"><a class="testi-img" href="#">
+                            <img src="{{ item.profile_photo_url }}"
+                                 alt="testimonial"></a>
+                            <div class="testi-quote"><i class="icofont-quote-left"></i>
+                                <p>{{ item.text }}.</p>
+                                <h4>{{ item.author_name }}</h4>
+                            </div>
+                        </div>
+                    </li>
+
+                {% endfor %}
+
+
+            </ul>
+        </div>
+    </section>
+    <section class="about-choose">
+        <div class="container">
+            <div class="row">
+                <div class="col-11 col-md-9 col-lg-7 col-xl-6 mx-auto">
+                    <div class="section-heading">
+                        <h2>Why People Choose Their Daily Organic Life With Us</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="choose-card">
+                        <div class="choose-icon"><i class="icofont-fruits"></i></div>
+                        <div class="choose-text">
+                            <h4>100% fresh organic food</h4>
+                            <p>We sells fresh foods that contains essential vitamins,minerals, fiber and other
+                                nutrients</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="choose-card">
+                        <div class="choose-icon"><i class="icofont-vehicle-delivery-van"></i></div>
+                        <div class="choose-text">
+                            <h4>Delivery within one hour</h4>
+                            <p>We provide faster delivery within the ordered time or before at a cheaper rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="choose-card">
+                        <div class="choose-icon"><i class="icofont-loop"></i></div>
+                        <div class="choose-text">
+                            <h4>quickly return policy </h4>
+                            <p>We provide return policy you can get more information about our return policy <a
+                                    href=""></a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="choose-card">
+                        <div class="choose-icon"><i class="icofont-support"></i></div>
+                        <div class="choose-text">
+                            <h4>instant support team</h4>
+                            <p>We provide quick support if having issues with you product you can contact us on our
+                                contact
+                                <a href="{% url 'home:contact_page' %}" class="text-danger">page</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 col-xl-12 stretch-card">
+            <div class="row flex-grow-1">
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-0 primary-text">New Orders</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-8 col-md-12 col-xl-8">
+                                    <h3 class="mb-2">{{ new_orders_count }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <div class="d-flex">
+                                            <p class="text-success pl-5">
+                                                <span>Total Amount ${{ new_orders_total }}</span>
+                                            </p>
+                                            <p class="text-success">
+                                                <span>Sub Total ${{ new_orders_sub_total }}</span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-8 col-md-12 col-xl-8 pt-3 mt-3">
+                                    <h3 class="mb-2 primary-text"> Customers</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <div class="d-flex">
+                                            <p class="text-success">
+                                                <span>Customers Count {{ user_count }}</span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-0 primary-text">Products</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-8 col-md-12 col-xl-8">
+                                    <h3 class="mb-2">{{ products_count }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <div class="d-flex">
+                                            <p class="text-success">
+                                                <span>Active Products {{ active_products_count }}</span>
+                                            </p>
+                                            <p class="text-success">
+                                                <span>Not Active Products {{ inactive_products_count }}</span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-8 col-md-12 col-xl-8 pt-3 mt-3">
+                                    <h3 class="mb-2 primary-text"> Most Viewed Product</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <div class="d-flex">
+                                            <p class="text-success">
+                                                <span> {{ most_viewed_product.name }} --view count {{ most_viewed_product.view_count }}</span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-baseline mb-2">
+                        <h6 class="card-title mb-0 primary-text">Inbox</h6>
+                        <div class="dropdown mb-2">
+                            <button class="btn p-0" type="button" id="dropdownMenuButton6" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="feather feather-more-horizontal icon-lg text-muted pb-3px">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-eye icon-sm me-2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span class="">View</span></a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                        {% for contact in contacts %}
+                            <a href="{% url 'home:dashboard_contact_detail' contact.id %}"
+                               class="d-flex align-items-center border-bottom pb-3">
+                                <div class="me-3">
+                                    <img src="{% static 'assets/images/user.png' %}" class="rounded-circle wd-35"
+                                         alt="user">
+                                </div>
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="text-body mb-2">{{ contact.name }}</h6>
+                                        <p class="text-muted tx-12">{{ contact.timestamp }}</p>
+                                    </div>
+                                    <p class="text-muted tx-13">{{ contact.subject|truncatewords:5 }}...</p>
+                                </div>
+                            </a>
+
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xl-7{% comment %}col-lg-7 col-xl-6{% endcomment %} grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">New Orders</h6>
+                    <p class="text-muted mb-3"> List of active new orders from customers.</p>
+                    <div class="table-responsive">
+                        <div id="dataTableExample_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <table id="dataTableExample" class="table dataTable no-footer pb-5"
+                                           aria-describedby="dataTableExample_info">
+                                        <thead>
+
+                                        <tr>
+
+                                            <th class="sorting sorting_asc" tabindex="0"
+                                                aria-controls="dataTableExample" rowspan="1" colspan="1"
+                                                aria-sort="ascending"
+                                                aria-label="Name: activate to sort column descending"
+                                                style="width: 154.234px;">Name
+                                            </th>
+
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Office: activate to sort column ascending"
+                                                style="width: 113.031px;">Delivery Meth
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Office: activate to sort column ascending"
+                                                style="width: 113.031px;">Ordered
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Age: activate to sort column ascending"
+                                                style="width: 46.9219px;">Received
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Start date: activate to sort column ascending"
+                                                style="width: 108.5px;">Ordered Date
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTableExample"
+                                                rowspan="1" colspan="1"
+                                                aria-label="Salary: activate to sort column ascending"
+                                                style="width: 76.3125px;">Paid
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for item in new_orders %}
+
+                                            <tr class="even">
+                                                <td class="sorting_1">
+                                                    <a href="{{ item.get_update_url }}"
+                                                       class="text-success">
+                                                        <i data-feather="edit" class="text-success"></i>
+                                                    </a>
+                                                    <a href="{{ item.get_delete_url }}" class="text-danger">
+                                                        <i data-feather="trash" class="text-danger"></i>
+                                                    </a>
+                                                <a href="{{ item.get_update_url }}" class="text-dark">
+                                                    {% if not item.customer.first_name and item.customer.last_name %}
+                                                        {{ item.customer.first_name }}
+                                                        {{ item.customer.last_name }}
+                                                    {% else %}
+                                                        {{ item.user.email }}
+                                                    {% endif %}
+                                                </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ item.get_update_url }}">
+                                                        {% if item.delivery_method == "PICKUP" %}
+                                                            <span class="badge bg-success">{{ item.delivery_method }}</span>
+                                                        {% else %}
+                                                            <span class="badge bg-danger">{{ item.delivery_method }}</span>
+                                                        {% endif %}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {% if item.ordered %}
+                                                        Ordered
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if item.received %}
+                                                        Received
+                                                    {% else %}
+                                                        Not Received
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if item.ordered %}
+                                                        {{ item.ordered_date }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if item.ordered %}
+                                                        ${{ item.get_total }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+

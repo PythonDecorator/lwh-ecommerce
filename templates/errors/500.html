@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="error-part">
+        <div class="container">
+            <h1>500 | Server Error</h1><img class="img-fluid" src="{% static 'assets/images/404.png' %}" alt="error">
+            <h3>An error Occurred.</h3>
+            <p>We are currently working on it.</p><a href="{% url 'home:home_page' %}">go to home</a>
+        </div>
+    </section>
+{% endblock %}

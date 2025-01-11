@@ -1,0 +1,27 @@
+{% extends 'dashboard/dashboard.html' %}
+
+{% block content %}
+
+    <div class="row" style="display:flex;justify-content: center;align-items: center;height: 100%;width: 100%">
+        <div class="col-lg-5 col-xl-5 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Are you sure you want to
+                        delete {{ order.customer.first_name }}- {{ order.customer.last_name }}
+                        Order?</h6>
+                    {% if not order.received  and order.ordered %}
+                        <p class="text-muted">Please note that this order has not been received by the user.</p>
+                    {% endif %}
+                    <div class="d-flex">
+                        <a class="btn btn-success mr-5" href="{{ order.get_dashboard_absolute_url }}">Go back</a>
+                        <form action="." method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

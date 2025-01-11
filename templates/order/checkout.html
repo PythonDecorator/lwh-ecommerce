@@ -1,0 +1,528 @@
+{% extends 'base.html' %}
+{% load item_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block css %}
+
+{% endblock %}
+{% block content %}
+
+    <section class="inner-section single-banner"
+             style="background: url({% static 'assets/images/single-banner.jpg' %}) no-repeat center;">
+        <div class="container">
+            <h2>checkout</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home_page' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">checkout</li>
+            </ol>
+        </div>
+    </section>
+    <section class="inner-section checkout-part">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Your order</h4>
+                        </div>
+                        <div class="account-content">
+                            <div class="table-scroll">
+                                <table class="table-list">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class=" d-none d-md-table-cell">Serial</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Product</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">action</th>
+                                        <th scope="col">quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in items %}
+                                        <tr>
+                                            <td class="table-serial  d-none d-md-table-cell">
+                                                <h6>0{{ forloop.counter }}</h6>
+                                            </td>
+                                            <td class="table-image d-none  d-md-table-cell "><a
+                                                    href="{{ item.item.get_absolute_url }}">
+                                                <img src="{{ item.item.imageURL }}" alt="product"></a>
+                                            </td>
+                                            <td class=" table-price ">
+                                                <p style="word-break: break-all;max-width: 300px;min-width: 100px;">
+                                                    <a href="{{ item.item.get_absolute_url }}" class="text-black"
+                                                       style="inline-size: 100%;word-break: normal;overflow-wrap: anywhere;color: red">
+                                                        {{ item.item.name|truncatewords:6 }}
+                                                    </a>
+                                                </p>
+                                            </td>
+
+                                            <td class="table-price ">
+                                                <h6 class="{{ item.id }}order_item_price">
+                                                    ${{ item.get_final_price }}</h6>
+                                            </td>
+                                            <td class="table-action" style="min-width: 180px;">
+                                                <a class="view  " href="#" title="Quick View"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#checkout-image-view{{ item.id }}"><i
+                                                        class="fas fa-eye"></i></a>
+
+                                                <button class="product-add" title="Add to Cart"><i
+                                                        class="fas fa-shopping-basket"></i><span>add</span>
+                                                </button>
+                                                <div class="product-action mx-auto" style="max-width: 40px !important;">
+                                                    <button class="" title="Quantity Minus"><i
+                                                            class="icofont-minus"
+                                                            onclick="addAndRemoveFromCart({{ item.item.id }},'remove')"></i>
+                                                    </button>
+
+                                                    <input type="hidden" id="{{ item.item.id }}_id_item_id"
+                                                           class="{{ item.item.id }}_id_item_id"
+                                                           name="item_id"
+                                                           value="{{ item.item.id }}">
+
+                                                    <input class="{{ item.item.id }}_id_item_count"
+                                                           name="item_count"
+                                                           id="{{ item.item.id }}_id_item_count"
+                                                           type="text"
+                                                           value="{{ item.quantity }}"
+                                                     style="min-width: 30px !important;"
+                                                    >
+
+                                                    <button class="" title="Quantity Plus">
+                                                        <i class="icofont-plus"
+                                                           onclick="addAndRemoveFromCart({{ item.item.id }},'add')"></i>
+                                                    </button>
+                                                </div>
+
+                                                <form action="{% url 'order:remove_from_cart' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" value="{{ item.item.id }}" name="item_id">
+                                                    <button type="submit">
+                                                        <a class="trash" href="#"
+                                                           title="Remove Order Item"><i
+                                                                class="icofont-trash"></i></a>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td class="table-quantity">
+                                                <div class="mx-auto">
+                                                    <input class=" {{ item.item.id }}_id_item_count"
+                                                           name="item_count"
+                                                           id="{{ item.item.id }}_id_item_count"
+                                                           type="text"
+                                                           value="{{ item.quantity }}" style="max-width: 50px;" >
+                                                </div>
+                                            </td>
+
+                                            <div class="modal fade" id="checkout-image-view{{ item.id }}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <button class="modal-close icofont-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        <div class="product-view">
+                                                            <div class="row ">
+                                                                <div class="col-12 text-center ">
+                                                                    <div class="view-gallery">
+                                                                        <div class="view-label-group">
+
+                                                                            <label
+                                                                                    class="view-label feat">
+                                                                                {% if item.item.discount %}
+                                                                                    <del>${{ item.item.price }}</del>
+                                                                                    <span>${{ item.item.discount }}<small>/discount</small></span>
+                                                                                {% else %}
+                                                                                    <span>${{ item.item.price }}</span>
+                                                                                {% endif %}
+                                                                            </label>
+                                                                        </div>
+                                                                        <a href="{{ item.item.get_absolute_url }}"><img
+                                                                                src="{{ item.item.imageURL }}"
+                                                                                alt="product"
+                                                                                style="object-fit: contain;min-height: 300px;width: 100%">
+                                                                        </a>
+                                                                    </div>
+                                                                    <p class="text-capitalize px-5"> {{ item.item.name|safe }}</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+
+                                    {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% if not order.coupon %}
+                                <div class="chekout-coupon">
+                                    <button class="coupon-btn">Do you have a coupon code?</button>
+                                    <form class="coupon-form" method="post" action="{% url 'order:apply_coupon' %}">
+                                        {% csrf_token %}
+                                        <input type="text" name='coupon_code' id="id_coupon_code"
+                                               placeholder="Enter your coupon code">
+                                        <button type="submit"><span>apply</span></button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <br>
+                            {% endif %}
+                            <div class="checkout-charge">
+                                <ul>
+                                    <li><span>Sub total</span><span
+                                            class="total_item_amount">${{ order.get_sub_total }}</span></li>
+                                    {% if order.delivery_method == 'SHIPPING' %}
+                                        <li>
+                                            <span>delivery fee</span><span>${{ order.shipping_address.shipping_routine.price }}</span>
+                                        </li>
+                                    {% endif %}
+                                    {% if order.coupon %}
+                                        <li>
+                                            <span>discount (Coupon)</span><span> <strong>-% </strong>{{ order.coupon.percent }}</span>
+                                        </li>
+                                    {% endif %}
+                                    <li><span>Total<small>(Incl. VAT)</small></span><span
+                                            class="total_item_amount">${{ order.get_total }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <div class="row justify-content-between align-content-center" style="width: 100%">
+                                <div class="col-sm-12 col-md-6">
+                                    <h4>Delivery Address (Current Delivery Method
+                                        {% if  order.delivery_method == 'PICKUP' %}
+                                            Pickup
+                                        {% else %}
+                                            Shipping
+                                        {% endif %} )</h4>
+                                </div>
+                                <div class="col-sm-12 col-md-6 mt-sm-3" style="width: 100% !important;">
+                                    <button class="icofont-edit float-end btn btn-success float-end"
+                                            title="Edit This"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#profile-address-edit"
+                                            style="padding: 3px">Edit Profile And Shipping Address
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="account-content">
+                            <div class="row mx-auto">
+                                <div class="col-md-6 col-lg-4 alert fade show">
+                                    <div class="profile-card contact disable-active ">
+                                        <h4>Profile <span class=""></span></h4>
+                                        <hr>
+                                        <form action="." method="post" id="profile_form" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {{ customer_form|crispy }}
+                                            <button type="submit" class="btn  py-1">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-6  col-lg-4 alert fade show">
+                                    <div class="profile-card disable-active " style="min-height: 300px">
+                                        <h4>Delivery Method <span class=""></span></h4>
+
+                                        <form action="." method="post" id="delivery_method">
+                                            {% csrf_token %}
+                                            <br>
+                                            <div class="form-group" style="max-width:80% ">
+                                                {% if order.delivery_method == 'PICKUP' %}
+                                                    <input type="radio" id="id_delivery_method" name="delivery_method"
+                                                           value="PICKUP"
+
+                                                           checked="checked">
+                                                    <label for="pickup">PICKUP</label>
+                                                    <br>
+                                                    <input type="radio" id="id_delivery_method" name="delivery_method"
+                                                           value="SHIPPING"
+                                                    >
+                                                    <label for="shipping">SHIPPING</label>
+                                                    <br>
+                                                    <br>
+                                                {% else %}
+                                                    <input type="radio" id="pickup" name="delivery_method"
+                                                           value="PICKUP">
+                                                    <label for="on">PICKUP</label>
+                                                    <br>
+                                                    <input type="radio" id="shipping" name="delivery_method"
+                                                           value="SHIPPING" checked="checked"
+                                                    >
+                                                    <label for="shipping">SHIPPING</label>
+                                                    <br>
+                                                    <br>
+                                                {% endif %}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-6  col-lg-4 alert fade show">
+                                    <div class=" disable-active "
+                                         style="min-height: 300px;background-color: rgba(246,245,245,0.86);padding: 20px;border-radius: 20px">
+                                        <h4>Shipping Address <span class=""></span></h4>
+                                        <form action="." method="post" id="shipping_form">
+                                            {% csrf_token %}
+
+                                            {{ address_form|crispy }}
+                                            <button type="submit" class="btn py-1">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 " {% if order.delivery_method == 'SHIPPING' %} style="display: none" {% endif %}>
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Pickup Address <span>(Click card to Select Pickup address)</span></h4>
+
+                        </div>
+                        <div class="account-content">
+
+                            <div class="row">
+                                {% for item in pickup %}
+                                    <div class="col-md-6 col-lg-4 alert fade show">
+                                        <div
+                                                {% if order.pickup_address.id  == item.id %}
+                                                    class="profile-card schedule active "
+                                                {% else %}
+                                                    class="profile-card schedule "
+                                                {% endif %}
+                                                    onclick="addPickUpLocation({{ item.id }})"
+                                        >
+                                            <h4>{{ item.name }}  </h4>
+                                            <div class="p-3">
+                                                <p>
+                                                    {{ item.location }}
+                                                </p>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 " {% if order.delivery_method == 'PICKUP' %} style="display: none" {% endif %}>
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Shipping Routine <span>(Click card to Select Pickup address)</span></h4>
+
+                        </div>
+                        <div class="account-content">
+
+                            <div class="row">
+                                {% for item in shipping_routine %}
+                                    <div class="col-md-6 col-lg-4 alert fade show">
+                                        <div
+                                                {% if order.shipping_address.shipping_routine.id  == item.id %}
+                                                    class="profile-card schedule active "
+                                                {% else %}
+                                                    class="profile-card schedule "
+                                                {% endif %}
+                                                    onclick="addShippingRoutine({{ item.id }})">
+
+                                            <h4>{{ item.routine }}  </h4>
+                                            <div class="p-3">
+                                                <p>
+                                                    Price: ${{ item.price }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {% if order.get_total > 0 and order.items.all.count > 0 %}
+                    <div class="col-lg-12">
+                    <div class="account-card shadow">
+                        <div class="account-title">
+                            <h4>Checkout</h4>
+
+                        </div>
+                        <div class="account-content">
+                            <div class="row">
+                                <div class="col-12">
+
+
+                                    Before Proceeding please make sure your shipping address is correct if
+                                    chosen.
+                                    <div class="checkout-check">
+                                        <input type="checkbox"
+                                               id="checkout-check" checked>
+                                        <label for="checkout-check">
+
+                                            By making this purchase you agree to our <a
+                                                href="{% url 'home:terms_and_condition' %}" target="_blank">Terms and
+                                            Conditions</a>.</label></div>
+
+                                    <a href="{% url 'order:make_payment' order.id %}">
+                                        <button id="submit" class="btn btn-danger ">
+                                            <div class="spinner hidden" id="spinner"></div>
+                                            <span id="button-text">proceed
+                                                to
+                                                checkout</span>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+    </section>
+
+
+
+
+    <div class="modal fade" id="profile-address-edit">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button class="modal-close" data-bs-dismiss="modal"><i class="icofont-close"></i></button>
+                <form class="modal-form" method="post" action=".">
+
+                    <div class="form-title"><h3>Update Profile and Address </h3></div>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ customer_form|crispy }}
+                        {{ address_form|crispy }}
+                        <button class="form-btn" type="submit">Save</button>
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+{% block script %}
+    <script type="text/javascript">
+        var update_shipping_url = `{% url 'order:update_shipping_address' %}`
+        var update_customer_url = `{% url 'user:update_profile_api' %}`
+        var change_pickup_location_url = `{% url 'order:change_pickup_location' %}`
+        var change_shipping_routine_url = `{% url 'order:change_shipping_routine' %}`
+
+        var delivery_method_form = document.getElementById('delivery_method');
+        delivery_method_form.addEventListener('change', function submit() {
+            HTMLFormElement.prototype.submit.call(delivery_method_form);
+        })
+    </script>
+
+
+
+{% endblock %}
+
+
+{% comment %}
+"id": "6UD51226AN994735D",
+  "intent": "CAPTURE",
+  "status": "COMPLETED",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "amount": {
+        "currency_code": "USD",
+        "value": "24.00"
+      },
+      "payee": {
+        "email_address": "barco.03-facilitator@gmail.com",
+        "merchant_id": "YQZCHTGHUK5P8"
+      },
+      "shipping": {
+        "name": {
+          "full_name": "John Doe"
+        },
+        "address": {
+          "address_line_1": "1 Main St",
+          "admin_area_2": "San Jose",
+          "admin_area_1": "CA",
+          "postal_code": "95131",
+          "country_code": "US"
+        }
+      },
+      "payments": {
+        "captures": [
+          {
+            "id": "34217542JR163364E",
+            "status": "COMPLETED",
+            "amount": {
+              "currency_code": "USD",
+              "value": "24.00"
+            },
+            "final_capture": true,
+            "seller_protection": {
+              "status": "ELIGIBLE",
+              "dispute_categories": [
+                "ITEM_NOT_RECEIVED",
+                "UNAUTHORIZED_TRANSACTION"
+              ]
+            },
+            "create_time": "2022-07-15T01:05:11Z",
+            "update_time": "2022-07-15T01:05:11Z"
+          }
+        ]
+      }
+    }
+  ],
+  "payer": {
+    "name": {
+      "given_name": "John",
+      "surname": "Doe"
+    },
+    "email_address": "sb-kf3ux2518261@business.example.com",
+    "payer_id": "YPJFPK3JACMXG",
+    "phone": {
+      "phone_number": {
+        "national_number": "4083802974"
+      }
+    },
+    "address": {
+      "address_line_1": "1 Main St",
+      "admin_area_2": "San Jose",
+      "admin_area_1": "CA",
+      "postal_code": "95131",
+      "country_code": "US"
+    }
+  },
+  "create_time": "2022-07-15T01:04:50Z",
+  "update_time": "2022-07-15T01:05:11Z",
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6UD51226AN994735D",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}{% endcomment %}

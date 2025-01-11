@@ -1,0 +1,137 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load crispy_forms_filters %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-5 col-xl-5 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Update Order</h6>
+                    <form action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        {% if order.delivery_method == 'SHIPPING' %}
+                            {{ address_form|crispy }}
+                        {% endif %}
+                        <button class="btn btn-success">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xl-7 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-baseline mb-2">
+                        <h3 class=" mb-0">Order</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-12 mb-3 ">
+                                <span class="custom_order_titles"> Reference Code:</span>{{ "   " }} {{ order.ref_code }}<span></span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="custom_order_titles"> First Name: </span>{{ "   " }} {{ order.customer.first_name }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="custom_order_titles"> Last Name: </span>{{ "   " }}{{ order.customer.last_name }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="custom_order_titles"> Delivery Method:</span>
+                                {{ "   " }}{{ order.delivery_method }}
+                            </div>
+                            {% if order.coupon %}
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles"> Discount:</span>
+                                    %{{ " " }}{{ order.coupon.percent }}
+                                </div>
+                            {% endif %}
+                            {% if order.delivery_method == "SHIPPING" %}
+                                <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3">
+                                        <span class="custom_order_titles">Shipping Country:</span>
+                                        {{ "   " }}{{ order.shipping_address.country }}</div>
+                                    <span class="custom_order_titles">Shipping Street: </span>
+                                    {{ "   " }}{{ order.shipping_address.street_address }}</div>
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles">Shipping Apartment:</span>
+                                    {{ "   " }}{{ order.shipping_address.apartment_address }}</div>
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles"> Shipping State: </span>{{ "   " }} {{ order.shipping_address.state }}
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles">Shipping Zip Code:</span>{{ "   " }} {{ order.shipping_address.zip_code }}
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles">Shipping Fee: </span>${{ "   " }}{{ order.shipping_address.shipping_routine.price }}
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles">Shipping Routine: </span>{{ "   " }}{{ order.shipping_address.shipping_routine.routine }}
+                                </div>
+                            {% else %}
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles"> Pickup Name: </span>{{ "   " }}{{ order.pickup_address.name }}
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <span class="custom_order_titles"> Pickup Location:</span>{{ "   " }} {{ order.pickup_address.location }}
+                                </div>
+                            {% endif %}
+                            <div class="col-12 mb-3">
+                                <span class="custom_order_titles"> Sub Total: </span>{{ "   " }}${{ order.get_sub_total }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="custom_order_titles">Total:</span> {{ "   " }} ${{ order.get_total }}</div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Order Items</h6>
+
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order_item in order.items.all %}
+                                <tr>
+                                    <td class="py-1">
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td class="">
+                                        <img src="{{ order_item.item.imageURL }}" alt="image">
+                                    </td>
+                                    <td>
+                                        <a href="{{ order_item.item.get_absolute_url }}"
+                                           target="_blank">{{ order_item.item.name }}</a>
+                                    </td>
+                                    <td>{{ order_item.quantity }}</td>
+                                    <td>${{ order_item.get_final_price }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

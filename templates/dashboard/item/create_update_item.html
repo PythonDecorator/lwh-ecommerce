@@ -1,0 +1,98 @@
+{% extends 'dashboard/dashboard.html' %}
+{% load crispy_forms_filters %}
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-5 col-xl-5 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">{{ title }}</h6>
+                    <form action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-success">{{ action }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xl-7 stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-baseline mb-2">
+                        <h6 class="card-title mb-0">Products</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                            <tr>
+
+                                <th class="pt-0">#</th>
+                                <th class="pt-0">Name</th>
+                                <th class="pt-0">Price</th>
+                                <th class="pt-0">Category</th>
+                                <th class="pt-0">Views</th>
+                                <th class="pt-0">Discount price</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'items:item_update' item.id %}" class="text-success">
+                                            <i data-feather="edit"></i>
+                                        </a>
+                                        <a href="{{ item.get_delete_url }}" class="text-danger">
+                                            <i data-feather="trash"></i>
+                                        </a>
+                                    </td>
+                                    <td><a href="{{ item.get_absolute_url }}" target="_blank" class="text-dark">
+                                        {{ item.name|safe|truncatewords:3 }}</a></td>
+                                    <td><a href="{{ item.get_absolute_url }}" target="_blank" class="text-dark">
+                                        ${{ item.price }}</a></td>
+
+                                    <td><span class="badge bg-success">{{ item.category }}</span></td>
+                                    <td>
+                                        {% if item.featured %}
+                                            <span class="badge bg-success">{{ item.view_count }}</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">{{ item.view_count }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if item.discount_price %}
+                                            ${{ item.discount_price }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row pt-5 mt-5 mx-5 px-5  justify-content-center">
+                            {% if items.has_other_pages %}
+                                <ul class="pagination">
+
+                                    {% for i in items.paginator.page_range %}
+                                        {% if items.number == i %}
+
+                                            <li class="page-item"><a class="page-link bg-success text-white">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
