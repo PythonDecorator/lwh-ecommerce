@@ -9,14 +9,14 @@ from home.utils import gimsap_send_mail_util
 
 def send_custom_user_email(email, password, first_name, last_name):
     gimsap_send_mail_util(
-        subject="Gimsap Account Created",
+        subject="Living Water Heritage Account Created",
         recipient_list=[email],
         html_message=render_to_string(
             'email_templates/email_base.html',
             {
                 'title': "Account Was Created Using Email",
                 'message': f"<p>Hi 👋 {first_name} -{last_name} </p>"
-                           f"<p>Gimsap Account was created using a secured password and "
+                           f"<p>Living Water Heritage Account was created using a secured password and "
                            f"email provided by you to keep track of your order and also signin. you can change the "
                            f"password at your account at your leisure time on our website. "
                            f"</p>"

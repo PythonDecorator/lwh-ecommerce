@@ -36,7 +36,7 @@ def successful_order_message_for_pickup(email, first_name, last_name, ref_code, 
             'email_templates/email_base.html',
             {
                 'title': "Customer Just made an active Order",
-                'message': f"<h4>Hi 👋 Gimsap </h4>"
+                'message': f"<h4>Hi 👋 Living Water Heritage </h4>"
                            f"A customer named {first_name} -{last_name} -{email} has made an order at this price rate "
                            f"<strong>${price}</strong> ."
                            f" Customer will be picking up order at this location <strong>{pickup_location}</strong>."
@@ -99,7 +99,7 @@ def successful_order_message_for_shipping(
             'email_templates/email_base.html',
             {
                 'title': "Customer Just made an active Order",
-                'message': f"<h3>Hi 👋 Gimsap </h3>"
+                'message': f"<h3>Hi 👋 Living Water Heritage </h3>"
                            f"<p/> A customer named {first_name} -{last_name} just made an order at this price rate ${price}. <br/>"
                            f"The reference code is <strong>{ref_code}</strong>"
                            f" which could be used to get info about the order.</p> "
