@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from decouple import config
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -33,10 +34,11 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
-if DEBUG:
-    ALLOWED_HOSTS = ["*", ]
-else:
-    ALLOWED_HOSTS = [".gimsap.com", "gimsap.com", "142.93.158.166"]
+ALLOWED_HOSTS = ["*"]
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -57,7 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_celery_beat',
     'post_office',
-    'crispy_bootstrap4',  
+    'crispy_bootstrap4',
 
 
     # my apps
@@ -73,7 +75,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     # Todo : for heroku will be removed later
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -108,24 +109,12 @@ WSGI_APPLICATION = 'Gimsap.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('POSTGRESDB_NAME', default=''),
-            'USER': config('POSTGRESDB_USER', default=''),
-            'PASSWORD': config('POSTGRESDB_PASSWORD', default=''),
-            'HOST': config('POSTGRESDB_HOST', default=''),
-            'PORT': '',
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -164,7 +153,8 @@ MEDIA_URL = '/media/'
 #  Add configuration for static files storage using whitenoise
 # Todo: note i installed  gunicorn dj-database-url whitenoise psycopg2 for heroku
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles')
@@ -197,7 +187,7 @@ AUTHENTICATION_BACKENDS = (
     # Needed to log in by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    # "allauth.account.auth_backends.AuthenticationBackend"
 )
 
 EMAIL_BACKEND = "post_office.EmailBackend"
