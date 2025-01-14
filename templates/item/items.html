@@ -246,5 +246,10 @@
 
 
 {% block script %}
+<script>
+    const itemList = JSON.parse(document.getElementById('item-list-data').textContent);
+    console.log(itemList);
+</script>
+
 
 {% endblock %}
