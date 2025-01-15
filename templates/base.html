@@ -132,7 +132,7 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <a href=" {% url 'home:home_page' %}">
-                    <img src="{% static 'assets/images/logo-bg.PNG' %}"
+                    <img src="{% static 'assets/images/logo-bg.png' %}"
                          alt="logo" class=""></a>
                 <button class="header-src"><i class="fas fa-search"></i></button>
             </div>
@@ -273,7 +273,7 @@
 <aside class="nav-sidebar">
     <div class="nav-header">
         <a href="{% url 'home:home_page' %}" class="">
-            <img src="{% static 'assets/images/logo.png' %}"
+            <img src="{% static 'assets/images/logo-bg.png' %}"
                  alt="logo"></a>
         <button class="nav-close"><i class="icofont-close"></i></button>
     </div>
@@ -433,7 +433,7 @@
         <div class="row mx-auto">
             <div class="col-sm-6 col-xl-4">
                 <div class="footer-widget"><a class="footer-logo" href="#"><img
-                        src="{% static 'assets/images/logo.png' %}" alt="logo"></a>
+                        src="{% static 'assets/images/logo-bg.png' %}" alt="logo"></a>
                     <p class="footer-desc">LIVING WATER HERITAGE MARKT INC. is a small family-run business based in Edmonton,
                          nestled against the foothills of the Rockies..</p>
                     <ul class="footer-social">
@@ -557,7 +557,7 @@
     }
     // if I am logged I set the device to my device
     console.log(is_authenticated)
-    let logo_url = `{% static 'assets/images/logo.png' %}`.toString()
+    let logo_url = `{% static 'assets/images/logo-bg.png' %}`.toString()
     if (is_authenticated === "True") {
         if (`{{ request.user.customer.device }}` !== "" || null) {
             let gimsap_device = `{{ request.user.customer.device }}`.toString();
@@ -585,7 +585,7 @@
             {% for message in messages %}
                 console.log("{{ message.tags }}")
                 Swal.fire({
-                    imageUrl: '{% static 'assets/images/logo.png' %}',
+                    imageUrl: '{% static 'assets/images/logo-bg.png' %}',
                     imageHeight: 50,
                     imageAlt: 'Living Water Heritage',
                     confirmButtonColor: '#ff3838',

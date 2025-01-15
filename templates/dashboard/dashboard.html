@@ -119,7 +119,7 @@
     <nav class="sidebar">
         <div class="sidebar-header">
             <a href="{% url 'home:home_page' %}" class="sidebar-brand">
-                <img src="{% static 'assets/images/logo.png' %}"
+                <img src="{% static 'assets/images/logo-bg.png' %}"
                      alt="logo" style="object-fit: contain;width: 50%">
             </a>
             <div class="sidebar-toggler not-active">
@@ -437,7 +437,7 @@
         {% for message in messages %}
             console.log("{{ message.tags }}")
             Swal.fire({
-                imageUrl: '{% static 'assets/images/logo.png' %}',
+                imageUrl: '{% static 'assets/images/logo-bg.png' %}',
                 imageHeight: 50,
                 imageAlt: 'Living Water Heritage',
                 confirmButtonColor: '#ff3838',
